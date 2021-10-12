@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />    
+    <title>Table of {persons.size()} persons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/w3.css">
+    <link rel="icon" href="images/logo.png"/>
+    <style>
+        .center {
+            margin: 32px auto;
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+        <div class="w3-container">
+            <div class="w3-panel center">
+                <div class="w3-card-4">
+                    <table class="w3-table w3-striped">
+                        <caption class="w3-xlarge w3-light-grey">Persons</caption>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#for person in persons}
+                                <tr>
+                                    <td>{person.firstName}</td>
+                                    <td>{person.lastName}</td>
+                                </tr>
+                            {/for}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="w3-panel center">
+                <div class="w3-panel w3-justify">
+                    <hr class="w3-border-grey">
+                    <p>Die Daten der obigen Tabelle wurden aus der Datenbank gelesen.
+                    Das HTML wurde am Server erstellt und im Format text/html an den Browser gesendet.
+                    Dazu wird die Qute Templating Engine verwendet.
+                    Früher musste man das sehr umständlich mit Java Server Faces umsetzen.
+                    </p>
+                    <hr class="w3-border-grey">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

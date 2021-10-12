@@ -1,0 +1,27 @@
+GET http://localhost:8080/api/person
+Accept: application/json
+
+###
+GET http://localhost:8080/api/person/3
+Accept: application/json
+
+###
+GET http://localhost:8080/api/school/2
+Accept: application/json
+
+###
+GET http://localhost:8080/api/bill
+Accept: application/json
+###
+PUT http://localhost:8080/api/bill
+Accept: application/json
+Content-Type: application/json
+
+{
+    "lines": [
+      {
+        "amount": 60
+      }
+    ],
+    "number": "R0123435"
+  }
