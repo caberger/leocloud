@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  mysql:
+    build:
+      context: ./mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      # it is not a problem to check in the password in clear text:
+      # the mysql service is only accessible within this docker network and is not exposed to the LAN.
+      # if you think this is a problem you can store it as a github secret yourself instead.
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - database:/var/lib/
+  appsrv:
+    build:
+      context: ./appsrv
+    restart: always
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - mysql
+volumes:
+  database:
