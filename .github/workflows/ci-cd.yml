@@ -33,7 +33,7 @@ jobs:
 
     - name: build with Maven
       run: |
-         mvn -Dquarkus-profile=prod -Dbase.href="/" -B install
+         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
          pwd
          ls -l target
       working-directory: appsrv
