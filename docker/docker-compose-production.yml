@@ -30,6 +30,6 @@ services:
     ports:
       - 80:80
     depends_on:
-      - mysql
+      - appsrv
 volumes:
   database:
