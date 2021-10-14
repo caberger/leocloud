@@ -43,7 +43,7 @@ jobs:
         echo "workingdir: distribution/${{ env.DISTRIBUTION_FOLDER }}"
         ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
         docker image ls
-      working-directory: distribution/target/distribution-0.0.1-dist/docker        
+      working-directory: ${{ env.DISTRIBUTION_FOLDER }}        
 
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -54,7 +54,7 @@ jobs:
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
-      working-directory: distribution/target/distribution-0.0.1-dist/docker
+      working-directory: ${{ env.DISTRIBUTION_FOLDER }}
     
     - name: install ssh key
       uses: caberger/install-ssh-key@v1.0
