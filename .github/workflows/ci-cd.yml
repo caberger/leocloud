@@ -37,7 +37,9 @@ jobs:
          mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
 
     - name: docker images
-      run: docker-compose up --build
+      run: |
+        docker-compose up --build
+        docker image ls
       working-directory: distribution/target/distribution-${{ env.version }}-dist
 
 #    - name: Extract metadata (tags, labels) for Docker
