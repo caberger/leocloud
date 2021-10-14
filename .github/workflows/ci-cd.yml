@@ -73,6 +73,8 @@ jobs:
     - name: install on server  
       working-directory: distribution
       run: |
-        chmod +x ./install.sh
-        ./install.sh "${{ github.actor }}" "${{ secrets.REGISTRY_ACCESS_TOKEN }}" "${{ env.REGISTRY }}/${{ github.repository }}"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
+        scp install.sh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "chmod +x ~/dist/install.sh"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }}"
 
