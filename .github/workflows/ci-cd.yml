@@ -62,4 +62,5 @@ jobs:
 
     - name: push images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
-        working-directory: distribution/target/distribution-0.0.1-dist/docker
+      working-directory: distribution/target/distribution-0.0.1-dist/docker
+     
