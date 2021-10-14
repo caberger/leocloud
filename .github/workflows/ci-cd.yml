@@ -34,13 +34,13 @@ jobs:
 
     - name: build with Maven
       run: |
-         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
+        mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
 
     - name: docker images
       run: |
         pwd
         ls -l
-        docker-compose --build
+        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         docker image ls
       working-directory: distribution/target/distribution-${{ env.version }}-dist/docker
 

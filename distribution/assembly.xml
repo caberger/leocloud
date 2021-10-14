@@ -13,8 +13,14 @@
             <directory>../docker</directory>
             <includes>
                 <include>docker-compose.yml</include>
-                <include>Makefile</include>
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../docker</directory>
+            <includes>
+                <include>build.sh</include>
+            </includes>
+            <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
             <directory>../docker/appsrv</directory>
