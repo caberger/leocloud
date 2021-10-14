@@ -1,0 +1,47 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>at.ac.htl-leonding.leocloud</groupId>
+        <artifactId>leocloud-demo-app</artifactId>
+        <version>0.0.1</version>
+    </parent>  
+    <artifactId>distribution</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>${global.groupId}</groupId>
+            <artifactId>leocloud-demo-app</artifactId>
+            <version>${global.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>${global.groupId}</groupId>
+            <artifactId>docker</artifactId>
+            <version>${global.version}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>make-bundles</id>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                    <phase>package</phase>
+                    <configuration>
+                        <descriptors>
+                            <descriptor>assembly.xml</descriptor>
+                        </descriptors>
+                    </configuration>
+                </execution>
+            </executions>
+            </plugin>
+        </plugins>
+    </build>  
+</project>

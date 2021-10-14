@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+    <id>dist</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>../docker</directory>
+            <includes>
+                <include>docker-compose.yml</include>
+                <include>Makefile</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../docker/appsrv</directory>
+            <includes>
+                <include>Dockerfile</include>
+                <include>scripts/*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../docker/mysql</directory>
+            <includes>
+                <include>Dockerfile</include>
+            </includes>
+        </fileSet>
+<!--        
+        <fileSet>
+            <directory>../docker/nginx</directory>
+            <includes>
+                <include>Dockerfile</include>
+                <include>default.conf</include>
+            </includes>
+        </fileSet>
+-->
+        <fileSet>
+            <directory>../appsrv/target</directory>
+            <outputDirectory>../docker/appsrv/deployments</outputDirectory>
+            <includes>
+                <include>*-runner*</include>
+                <!--<include>lib/*</include>-->
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

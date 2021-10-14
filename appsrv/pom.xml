@@ -3,28 +3,27 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>at.htl..quarkus</groupId>
-  <version>0.5.0</version>
+  <parent>
+    <groupId>at.ac.htl-leonding.leocloud</groupId>
+    <artifactId>leocloud-demo-app</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <packaging>pom</packaging>
+  <groupId>at.ac.htl-leonding.leocloud</groupId>
   <artifactId>leocloud-quarkus</artifactId>
   <properties>
-    <build.manifest.section>Build Details</build.manifest.section>
-    <build.unknown>UNKNOWN</build.unknown>
-    <build.number>${build.unknown}</build.number>
-    <build.revision>${build.unknown}</build.revision>
-
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>14</maven.compiler.source>
+    <maven.compiler.target>14</maven.compiler.target>
     <cucumber.version>6.8.1</cucumber.version>
-    <docker-plugin.version>0.34.0</docker-plugin.version>
     <junit.version>4.13.2</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>1.13.7.Final</quarkus-plugin.version>
+    <quarkus-plugin.version>2.3.0.Final</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.13.7.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.3.0.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
   <dependencyManagement>
