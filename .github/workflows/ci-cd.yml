@@ -39,10 +39,11 @@ jobs:
     - name: docker images
       run: |
         echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
+        echo "image: ${{ env.REGISTRY }}/${{ github.repository }}"
         ls
         pwd
         ls -l
-        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
         docker image ls
       working-directory: distribution/target/distribution-0.0.1-dist/docker        
       
