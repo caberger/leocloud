@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
+  DISTRIBUTION_FOLDER: distribution/target/distribution-0.0.1-dist/docker
 
 jobs:
   build:
@@ -40,10 +40,9 @@ jobs:
 
     - name: build docker images
       run: |
-        echo "workingdir: distribution/${{ env.DISTRIBUTION_FOLDER }}"
         ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
         docker image ls
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+      working-directory: ${{ env.DISTRIBUTION_FOLDER }}        
 
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -54,7 +53,7 @@ jobs:
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
+      working-directory: ${{ env.DISTRIBUTION_FOLDER }}
     
     - name: install ssh key
       uses: caberger/install-ssh-key@v1.0
@@ -69,6 +68,7 @@ jobs:
       run: |
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp install.sh server:~/dist
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.xml server:~/dist/docker-compose.yml
         ssh server "chmod +x ~/dist/install.sh"
-        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }}"
+        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }} ${{ secrets.SERVER_USER }}"
 

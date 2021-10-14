@@ -15,8 +15,7 @@ services:
     volumes:
       - database:/var/lib/
   appsrv:
-    build:
-      context: ./appsrv
+    image: leo-appsrv
     restart: always
     ports:
       - 8080:8080
@@ -26,10 +25,9 @@ services:
       - mysql
       - nginx
   nginx:
-    build:
-      context: ./nginx
+    image: leo-nginx
     restart: always
     ports:
-      - 8000:80
+      - 80:80
 volumes:
   database:

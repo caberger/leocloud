@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 REGISTRY=$2
-IMAGES="appsrv"
+IMAGES="appsrv nginx"
 pushd $SCRIPT_DIR
 
 if [[ "$1." == "build." ]]

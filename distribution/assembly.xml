@@ -12,7 +12,7 @@
         <fileSet>
             <directory>../docker</directory>
             <includes>
-                <include>docker-compose.yml</include>
+                <include>docker-compose-production.yml</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -30,20 +30,13 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../docker/mysql</directory>
-            <includes>
-                <include>Dockerfile</include>
-            </includes>
-        </fileSet>
-<!--        
-        <fileSet>
             <directory>../docker/nginx</directory>
             <includes>
                 <include>Dockerfile</include>
                 <include>default.conf</include>
+                <include>html/</include>
             </includes>
         </fileSet>
--->
         <fileSet>
             <directory>../appsrv/target</directory>
             <outputDirectory>../docker/appsrv/deployments</outputDirectory>
