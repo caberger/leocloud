@@ -40,11 +40,11 @@ jobs:
 #        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       run: |
         echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
-        ls distribution/target/distribution-${{ env.VERSION }}-dist/docker
+        ls distribution/target
         pwd
         ls -l
         docker image ls
-      working-directory: distribution/target/distribution-${{ env.VERSION }}-dist/docker        
+#      working-directory: distribution/target/distribution-${{ env.VERSION }}-dist/docker        
       
 #    - name: Extract metadata (tags, labels) for Docker
 #      id: meta
