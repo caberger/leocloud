@@ -72,7 +72,7 @@ jobs:
         server: ${{ secrets.SERVER }}
         alias: server
 
-      - run: |
-          echo "this is a test" > ~/test.txt
-          scp ~/test.txt server:~/
-          ssh server "ls -l ~"        
+    - run: |
+        echo "this is a test" > ~/test.txt
+        scp ~/test.txt server:~/
+        ssh server "ls -l ~"        
