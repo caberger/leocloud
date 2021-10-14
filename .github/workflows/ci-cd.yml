@@ -63,4 +63,16 @@ jobs:
     - name: push images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
       working-directory: distribution/target/distribution-0.0.1-dist/docker
-     
+    
+    - name: install ssh key
+      uses: caberger/install-ssh-key@v1.0
+      with:
+        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+        user: ${{ secrets.SERVER_USER }}
+        server: ${{ secrets.SERVER }}
+        alias: server
+
+      - run: |
+          echo "this is a test" > ~/test.txt
+          scp ~/test.txt server:~/
+          ssh server "ls -l ~"        
