@@ -72,7 +72,12 @@ jobs:
         server: ${{ secrets.SERVER }}
         alias: server
 
-    - run: |
+    - name: install on server  
+      working-directory: distribution
+      run: |
         echo "this is a test" > ~/test.txt
         scp ~/test.txt server:~/
-        ssh server "ls -l ~"        
+        ssh server "ls -l ~"
+        chmod +x ./install.sh
+        ./install.sh ${{ env.GITHUB_ACTOR}} ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+
