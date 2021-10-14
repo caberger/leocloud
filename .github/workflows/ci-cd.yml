@@ -74,7 +74,7 @@ jobs:
       working-directory: distribution
       run: |
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
-        scp install.sh server:~/dist"
+        scp install.sh server:~/dist
         ssh server "chmod +x ~/dist/install.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }}"
 
