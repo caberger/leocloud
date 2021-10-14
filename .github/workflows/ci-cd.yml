@@ -68,10 +68,9 @@ jobs:
       run: |
         pwd
         ls -l
-        echo "scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.xml server:~/dist/docker-compose.yml"
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp install.sh server:~/dist
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.xml server:~/dist/docker-compose.yml
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
         ssh server "chmod +x ~/dist/install.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }} ${{ secrets.SERVER_USER }}"
 
