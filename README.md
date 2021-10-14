@@ -25,7 +25,7 @@ You must set the following Github secrets:
 Login to ghcr.io
 ===
 
-The github action will ssh into the remote server, log into the container registry
+The github action will [ssh into the remote server](https://github.com/caberger/install-ssh-key), log into the container registry
 and pull the docker image using commands like this:
  using this command:
 
