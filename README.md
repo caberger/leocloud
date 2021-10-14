@@ -37,5 +37,5 @@ for details see the [github action](.github/workflows/ci-cd.yml)
 
 The rest is straight forward: 
 - you can use a docker-compose.yml file on the server to run your application.
-- you should add a systemctl service file to automatically start that docker-compose on system boot.
+- you should add a systemctl service file to automatically start that docker-compose on system boot, stop it before pulling the images and start it after pulling.
 
