@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  VERSION: 0.0.1
+  DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
 
 jobs:
   build:
@@ -18,18 +18,12 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
-
-    - name: install on server  
-      working-directory: distribution
-      run: |
-        chmod +x ./install.sh
-        ./install.sh "${{ github.actor }}" "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
-
     - uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-version: '17'
+
+    - uses: actions/checkout@v2
 
     - name: cache maven repository
       uses: actions/cache@v2
@@ -48,11 +42,7 @@ jobs:
 
     - name: build docker images
       run: |
-        echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
-        echo "image: ${{ env.REGISTRY }}/${{ github.repository }}"
-        ls
-        pwd
-        ls -l
+        echo "workingdir: distribution/${{ env.DISTRIBUTION_FOLDER }}"
         ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
         docker image ls
       working-directory: distribution/target/distribution-0.0.1-dist/docker        
@@ -81,4 +71,10 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
+
+    - name: install on server  
+      working-directory: distribution
+      run: |
+        chmod +x ./install.sh
+        ./install.sh "${{ github.actor }}" "${{ secrets.REGISTRY_ACCESS_TOKEN }}" "${{ env.REGISTRY }}/${{ github.repository }}"
 
