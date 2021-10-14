@@ -59,3 +59,7 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: push images
+      run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
+        working-directory: distribution/target/distribution-0.0.1-dist/docker
