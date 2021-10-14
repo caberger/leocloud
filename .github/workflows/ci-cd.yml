@@ -27,7 +27,7 @@ jobs:
       working-directory: distribution
       run: |
         chmod +x ./install.sh
-        ./install.sh "${{ env.GITHUB_ACTOR}}" "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
+        ./install.sh ${{ env.GITHUB_ACTOR }} ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
     - name: cache maven repository
       uses: actions/cache@v2
