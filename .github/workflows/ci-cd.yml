@@ -38,9 +38,11 @@ jobs:
 
     - name: docker images
       run: |
-        docker-compose up --build
+        pwd
+        ls -l
+        docker-compose --build
         docker image ls
-      working-directory: distribution/target/distribution-${{ env.version }}-dist
+      working-directory: distribution/target/distribution-${{ env.version }}-dist/docker
 
 #    - name: Extract metadata (tags, labels) for Docker
 #      id: meta
