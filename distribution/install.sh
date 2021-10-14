@@ -6,8 +6,8 @@ GITHUB_USER=$1
 ACCESS_TOKEN=$2
 IMAGE=$3
 
-docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
-docker pull $IMAGE-appsrv:latest
-docker image ls
+ssh server "sudo docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN"
+ssh server "sudo docker pull $IMAGE-appsrv:latest"
+ssh server "sudo docker image ls"
 
 
