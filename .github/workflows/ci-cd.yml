@@ -73,4 +73,5 @@ jobs:
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
         ssh server "chmod +x ~/dist/install.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }} ${{ secrets.SERVER_USER }}"
-
+        ssh server "sudo mkdir -p /usr/local/bin/application"
+        ssh server "sudo mv /home/${{ secrets.SERVER_USER }}/dist/docker-compose.yml /usr/local/bin/application"

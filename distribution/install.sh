@@ -11,7 +11,6 @@ SERVER_USER=$4
 
 docker container prune -f
 
-
 docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
 docker pull $IMAGE-appsrv:latest
 docker tag $IMAGE-appsrv:latest leo-appsrv
