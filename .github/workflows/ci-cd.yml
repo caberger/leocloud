@@ -40,7 +40,7 @@ jobs:
 #        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       run: |
         echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
-        ls distribution/target
+        ls distribution/target/distribution-0.0.1-dist/docker
         pwd
         ls -l
         docker image ls
