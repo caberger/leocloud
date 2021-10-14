@@ -23,6 +23,12 @@ jobs:
         java-version: '17'
 
     - uses: actions/checkout@v2
+    - name: install on server  
+      working-directory: distribution
+      run: |
+        chmod +x ./install.sh
+        ./install.sh ${{ env.GITHUB_ACTOR}} ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+
     - name: cache maven repository
       uses: actions/cache@v2
       with:
@@ -36,7 +42,9 @@ jobs:
       run: |
         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
 
-    - name: docker images
+
+
+    - name: build docker images
       run: |
         echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
         echo "image: ${{ env.REGISTRY }}/${{ github.repository }}"
@@ -60,7 +68,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: push images
+    - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
       working-directory: distribution/target/distribution-0.0.1-dist/docker
     
@@ -71,13 +79,4 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
-
-    - name: install on server  
-      working-directory: distribution
-      run: |
-        echo "this is a test" > ~/test.txt
-        scp ~/test.txt server:~/
-        ssh server "ls -l ~"
-        chmod +x ./install.sh
-        ./install.sh ${{ env.GITHUB_ACTOR}} ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
