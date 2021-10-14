@@ -37,14 +37,14 @@ jobs:
         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
 
     - name: docker images
-#        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       run: |
         echo "workingdir: distribution/target/distribution-${{ env.VERSION }}-dist/docker"
-        ls distribution/target/distribution-0.0.1-dist/docker
+        ls
         pwd
         ls -l
+        ./build.sh build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         docker image ls
-#      working-directory: distribution/target/distribution-${{ env.VERSION }}-dist/docker        
+      working-directory: distribution/target/distribution-0.0.1-dist/docker        
       
 #    - name: Extract metadata (tags, labels) for Docker
 #      id: meta
