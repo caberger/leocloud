@@ -24,12 +24,13 @@ services:
       - 8080
     depends_on:
       - mysql
-      - nginx
   nginx:
     build:
       context: ./nginx
     restart: always
     ports:
       - 8000:80
+    depends_on:
+      - appsrv
 volumes:
   database:

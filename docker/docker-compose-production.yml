@@ -8,6 +8,7 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_HOST: '%' 
     ports:
       - 3306:3306
     expose:
@@ -23,11 +24,12 @@ services:
       - 8080
     depends_on:
       - mysql
-      - nginx
   nginx:
     image: leo-nginx
     restart: always
     ports:
       - 80:80
+    depends_on:
+      - mysql
 volumes:
   database:
