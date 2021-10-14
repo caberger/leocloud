@@ -8,6 +8,19 @@ This example shows how to :
 - log into a remote server and pull that docker image on the remote server
 
 
+Service Stack
+---
+
+The following services are deployed on the remote server:
+
+- [nginx](https://www.nginx.com/) http server
+- [quarkus](http://quarkus.io/) JEE - Application Server
+- [mysql](https://www.mysql.com/) Database Server
+
+nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications.
+
+
+
 Preparation of your repository
 ===
 

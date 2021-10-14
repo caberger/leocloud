@@ -1,5 +1,6 @@
 FROM adoptopenjdk:jdk
 
+RUN apt update && apt install -y netcat && apt clean
 RUN mkdir /usr/local/bin/application
 COPY deployments/*.jar /usr/local/bin/application
 COPY scripts/* /usr/local/bin/application
