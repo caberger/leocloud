@@ -8,7 +8,7 @@
     <artifactId>leocloud-demo-app</artifactId>
     <version>0.0.1</version>
   </parent>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   <groupId>at.ac.htl-leonding.leocloud</groupId>
   <artifactId>leocloud-quarkus</artifactId>
   <properties>
