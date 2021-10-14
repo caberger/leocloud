@@ -39,3 +39,4 @@ The rest is straight forward:
 - you can use a docker-compose.yml file on the server to run your application.
 - you should add a systemctl service file to automatically start that docker-compose on system boot.
 
+for details see the [github action](.github/workflows/ci-cd.yml)
