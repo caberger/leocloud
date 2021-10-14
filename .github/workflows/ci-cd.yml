@@ -24,7 +24,7 @@ jobs:
       working-directory: distribution
       run: |
         chmod +x ./install.sh
-        ./install.sh ${{ env.GITHUB_ACTOR }} password
+        ./install.sh "${{ github.actor }}" "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
 
     - uses: actions/setup-java@v2
       with:
