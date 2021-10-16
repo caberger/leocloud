@@ -9,7 +9,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
   DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
 
 jobs:
@@ -34,6 +33,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-m2-
 
+
     - name: build with Maven
       run: |
         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
@@ -51,8 +51,11 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: convert github repository name to lowercase in order to get valid docker image identifiers
+      run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+
     - name: push docker images
-      run: ./build.sh push ${{ env.REGISTRY }}/${{ github.repository }}
+      run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
     
     - name: install ssh key
@@ -72,6 +75,6 @@ jobs:
         scp install.sh server:~/dist
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
         ssh server "chmod +x ~/dist/install.sh"
-        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ github.repository }} ${{ secrets.SERVER_USER }}"
+        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
         ssh server "sudo mkdir -p /usr/local/bin/application"
         ssh server "sudo mv /home/${{ secrets.SERVER_USER }}/dist/docker-compose.yml /usr/local/bin/application"
