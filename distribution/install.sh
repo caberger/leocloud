@@ -7,11 +7,11 @@ ACCESS_TOKEN=$2
 IMAGE=$3
 SERVER_USER=$4
 
-# systemctl stop docker-compose.service
+pushd /usr/local/bin/application
+
+docker-compose down
 
 docker container prune --force
-docker image prune --force
-
 docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
 docker pull $IMAGE-appsrv:latest
 docker tag $IMAGE-appsrv:latest leo-appsrv
@@ -21,9 +21,8 @@ docker tag $IMAGE-nginx:latest leo-nginx
 
 echo "prune images..."
 
-docker image prune -force
+docker image prune --force
 docker image ls
 
-#systemctl start docker-compose.service
-
-
+docker-compose up
+popd
