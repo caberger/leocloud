@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Server</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css">
+    <title>LeoCloud: Demo</title>
 </head>
+
 <body>
-    <h1>This is index.html of nginx</h1>
-    <h2>Rest API</h2>
-    <ul>
-        <li><a href="./api/person">persons</a></li>
-        <li><a href="./api/person/1">1st person</a></li>
-        <li><a href="./api/school">schools</a></li>
-        <li><a href="./api/school/1">1st school</a></li>
-    </ul>
+    <div class="paper container">
+        <article class="article">
+            <h1 class="article-title"><a href="">REST - API</a></h1>
+            <p class="article-meta">Repository: <a href="https://github.com/caberger/leocloud">leocloud by Christian
+                    Aberger</a></p>
+            <div class="text-lead">
+                <img src="https://unsplash.it/300" class="float-right float-top" alt="another random image">
+                Enterprise Java Demo
+                <h2>Deployed Components</h2>
+                <ul>
+                    <li>nginx http server</li>
+                    <li>quarkus JEE - Application Server</li>
+                    <li>mysql Database Server</li>
+                </ul>
+            </div>
+            <h3>Demo API</h3>
+            <ul>
+                <li><a href="./api/person">persons</a></li>
+                <li><a href="./api/person/1">1st person</a></li>
+                <li><a href="./api/school">schools</a></li>
+                <li><a href="./api/school/1">1st school</a></li>
+            </ul>
+        </article>
+        <div class="row">
+            <button>github</button>
+        </div>
+    </div>
 </body>
+
 </html>
