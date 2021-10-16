@@ -16,6 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: convert github repository name to lowercase in order to get valid docker image identifiers
+      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+    - name: "debug: display repoository name"
+      run: echo ${{ env.IMAGE_REPOSITORY }}
 
     - uses: actions/setup-java@v2
       with:
@@ -33,7 +38,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-m2-
 
-
     - name: build with Maven
       run: |
         mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
@@ -50,9 +54,6 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: convert github repository name to lowercase in order to get valid docker image identifiers
-      run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
