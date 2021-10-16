@@ -75,10 +75,10 @@ jobs:
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp install.sh server:~/dist
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
-        ssh server 'sudo (pushd /usr/local/bin/application && (docker-compose stop || echo down) && popd)'
+        ssh server "sudo '(pushd /usr/local/bin/application && (docker-compose stop || echo down) && popd)'"
         ssh server "chmod +x ~/dist/install.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
         ssh server "sudo mkdir -p /usr/local/bin/application"
         ssh server "sudo mv /home/${{ secrets.SERVER_USER }}/dist/docker-compose.yml /usr/local/bin/application"
-        ssh server 'sudo (pushd /usr/local/bin/application && docker-compose up --build && popd)'
+        ssh server "sudo '(pushd /usr/local/bin/application && docker-compose up --build && popd)'"
 
