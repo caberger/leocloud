@@ -57,24 +57,30 @@ jobs:
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
-    
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
+#    - name: install ssh key
+#      uses: caberger/install-ssh-key@v1.0
+#      with:
+#        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+#        user: ${{ secrets.SERVER_USER }}
+#        server: ${{ secrets.SERVER }}
+#        alias: server
     - name: install ssh key
-      uses: caberger/install-ssh-key@v1.0
+      uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-        user: ${{ secrets.SERVER_USER }}
-        server: ${{ secrets.SERVER }}
-        alias: server
+        ssh-private-key: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+    - name: create .ssh/known_hosts
+      run: |
+            ssh-keyscan -H -t rsa -v o.aberger.at  >> ~/.ssh/known_hosts
 
     - name: install on server  
       working-directory: distribution
       run: |
         pwd
         ls -l
-        ssh server "rm -rf ~/dist && mkdir -p ~/dist"
-        scp install.sh server:~/dist
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
-        ssh server "chmod +x ~/dist/*.sh"
-        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+        ssh ${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
+        scp install.sh ${{ secrets.SERVER }}:~/dist
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml ${{ secrets.SERVER }}:~/dist/docker-compose.yml
+        ssh ${{ secrets.SERVER }} "chmod +x ~/dist/*.sh"
+        ssh ${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
 
