@@ -78,9 +78,9 @@ jobs:
       run: |
         pwd
         ls -l
-        ssh ${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
-        scp install.sh ${{ secrets.SERVER }}:~/dist
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml ${{ secrets.SERVER }}:~/dist/docker-compose.yml
-        ssh ${{ secrets.SERVER }} "chmod +x ~/dist/*.sh"
-        ssh ${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
+        scp install.sh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist/docker-compose.yml
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "chmod +x ~/dist/*.sh"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
 
