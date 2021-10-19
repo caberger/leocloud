@@ -71,7 +71,7 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
     - name: create .ssh/known_hosts
       run: |
-            ssh-keyscan -H -t rsa -v o.aberger.at  >> ~/.ssh/known_hosts
+            ssh-keyscan -H -t rsa -v ${{ secrets.SERVER }}  >> ~/.ssh/known_hosts
 
     - name: install on server  
       working-directory: distribution
