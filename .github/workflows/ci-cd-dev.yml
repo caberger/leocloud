@@ -53,7 +53,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
