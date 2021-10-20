@@ -66,6 +66,10 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
+
+    - name: Setup tmate session (for debugging only)
+      uses: mxschmitt/action-tmate@v3
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
 #    - name: install ssh key
 #      uses: webfactory/ssh-agent@v0.5.3
 #      with:
@@ -73,6 +77,7 @@ jobs:
 #    - name: create .ssh/known_hosts
 #      run: |
 #        ssh-keyscan -H -t rsa -v o.aberger.at  >> ~/.ssh/known_hosts
+
 
     - name: install on server  
       working-directory: distribution
