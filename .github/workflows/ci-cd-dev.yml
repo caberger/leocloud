@@ -41,11 +41,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
-
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
-
 
     - uses: actions/setup-java@v2
       with:
