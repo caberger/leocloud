@@ -27,7 +27,7 @@ jobs:
 
 #   We install the ssh key on log into registry now to detect problems with secrets early (before build)
     - name: install ssh key
-      uses: caberger/install-ssh-key@v1.0
+      uses: caberger/install-ssh-key@v1
       with:
         ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
         user: ${{ secrets.SERVER_USER }}
@@ -42,7 +42,6 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
-
 
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
@@ -91,9 +90,9 @@ jobs:
       run: |
         pwd
         ls -l
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
-        scp install.sh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist/docker-compose.yml
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "chmod +x ~/dist/*.sh"
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+        ssh server "rm -rf ~/dist && mkdir -p ~/dist"
+        scp install.sh server:~/dist
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
+        ssh server "chmod +x ~/dist/*.sh"
+        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
 
