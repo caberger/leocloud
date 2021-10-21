@@ -7,6 +7,13 @@ on:
   push:
     branches: [ develop ]
 
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: enable tmate console debugging     
+        required: false
+        default: "disabled"
+
 env:
   REGISTRY: ghcr.io
   DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
@@ -19,6 +26,7 @@ jobs:
     - name: convert github repository name to lowercase in order to get valid docker image identifiers
       run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
+#   We install the ssh key on log into registry now to detect problems with secrets early (before build)
     - name: install ssh key
       uses: caberger/install-ssh-key@v1.0
       with:
@@ -26,6 +34,14 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+
 
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
@@ -57,13 +73,6 @@ jobs:
         ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
         docker image ls
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
-
-    - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
