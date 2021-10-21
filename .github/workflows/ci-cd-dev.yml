@@ -19,8 +19,18 @@ jobs:
     - name: convert github repository name to lowercase in order to get valid docker image identifiers
       run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-    - name: "debug: display repoository name"
-      run: echo ${{ env.IMAGE_REPOSITORY }}
+    - name: install ssh key
+      uses: caberger/install-ssh-key@v1.0
+      with:
+        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+        user: ${{ secrets.SERVER_USER }}
+        server: ${{ secrets.SERVER }}
+        alias: server
+
+    - name: Setup tmate session (for debugging only)
+      uses: mxschmitt/action-tmate@v3
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
+
 
     - uses: actions/setup-java@v2
       with:
@@ -59,19 +69,12 @@ jobs:
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
 #    - name: install ssh key
-#      uses: caberger/install-ssh-key@v1.0
+#      uses: webfactory/ssh-agent@v0.5.3
 #      with:
-#        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-#        user: ${{ secrets.SERVER_USER }}
-#        server: ${{ secrets.SERVER }}
-#        alias: server
-    - name: install ssh key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-    - name: create .ssh/known_hosts
-      run: |
-        ssh-keyscan -H -t rsa -v o.aberger.at  >> ~/.ssh/known_hosts
+#        ssh-private-key: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+#    - name: create .ssh/known_hosts
+#      run: |
+#        ssh-keyscan -H -t rsa -v ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
 
     - name: install on server  
       working-directory: distribution
