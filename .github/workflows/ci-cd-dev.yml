@@ -33,6 +33,8 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
+    - name: verify that ssh key is correct
+      run: ssh server "ls -l"
 
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -74,22 +76,15 @@ jobs:
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
-#    - name: install ssh key
-#      uses: webfactory/ssh-agent@v0.5.3
-#      with:
-#        ssh-private-key: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-#    - name: create .ssh/known_hosts
-#      run: |
-#        ssh-keyscan -H -t rsa -v ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
 
     - name: install on server  
       working-directory: distribution
       run: |
         pwd
         ls -l
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "rm -rf ~/dist && mkdir -p ~/dist"
-        scp install.sh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:~/dist/docker-compose.yml
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "chmod +x ~/dist/*.sh"
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+        ssh server "rm -rf ~/dist && mkdir -p ~/dist"
+        scp install.sh server:~/dist
+        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist/docker-compose.yml
+        ssh server "chmod +x ~/dist/*.sh"
+        ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
 
