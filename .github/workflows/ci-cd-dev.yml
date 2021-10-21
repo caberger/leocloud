@@ -27,7 +27,7 @@ jobs:
 
 #   We install the ssh key on log into registry now to detect problems with secrets early (before build)
     - name: install ssh key
-      uses: caberger/install-ssh-key@v1
+      uses: caberger/install-ssh-key@v1.0
       with:
         ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
         user: ${{ secrets.SERVER_USER }}
