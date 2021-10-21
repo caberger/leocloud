@@ -4,15 +4,14 @@
 name: Build Application (Development Branch)
 
 on:
-  push:
-    branches: [ develop ]
-
   workflow_dispatch:
     inputs:
       debug:
         description: enable tmate console debugging     
         required: false
         default: "disabled"
+  push:
+    branches: [ develop ]
 
 env:
   REGISTRY: ghcr.io
