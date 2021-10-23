@@ -42,8 +42,17 @@
             <outputDirectory>../docker/appsrv/deployments</outputDirectory>
             <includes>
                 <include>*-runner*</include>
-                <!--<include>lib/*</include>-->
             </includes>
+        </fileSet>
+       <fileSet>
+            <directory>../www/target/</directory>
+            <outputDirectory>../docker/nginx/html</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <excludes>
+                <exclude>**/*.map</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 </assembly>
