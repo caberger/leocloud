@@ -1,2 +1,6 @@
 node_modules
+node
+target
+**/.DS_Store
 package-lock.json
+

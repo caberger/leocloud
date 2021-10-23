@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+      "esModuleInterop": true,
+      "module": "es6",
+      "target": "es5",
+      "jsx": "react",
+      "allowJs": true,
+      "noImplicitAny": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "paths": {
+        "Model/*": ["src/model/*"],
+        "Styles/*": ["src/styles/*"],
+        "Lib/*": ["src/lib/*"],
+        "*": [
+            "node_modules/*"
+        ]
+    }
+  },
+  "include": [
+      "src/**/*"
+  ]
+}
