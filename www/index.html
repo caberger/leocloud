@@ -13,22 +13,25 @@
 <body>
     <div class="paper container">
         <article class="article">
-            <h1 class="article-title"><a href="">REST - API</a></h1>
+            <h1 class="article-title"><a href="">Enterprise Java Demo</a></h1>
             <p class="article-meta">Repository: <a href="https://github.com/caberger/leocloud">leocloud by Christian
                     Aberger</a></p>
             <div class="text-lead">
                 <img src="https://unsplash.it/300" class="float-right float-top" alt="another random image">
-                Enterprise Java Demo
+
                 <h2>Deployed Components</h2>
                 <ul>
-                    <li>nginx http server</li>
-                    <li>quarkus JEE - Application Server</li>
+                    <li>nginx http server and reverse proxy</li>
+                    <li>quarkus Microprofile Application Server</li>
                     <li>mysql Database Server</li>
                 </ul>
             </div>
+            <h3>Demo Application</h3>
+            <div><a href="./app.html" target="_blank">Demo School Table</a> using typescript via webpack, directly served by nginx</div>
+
             <h3>Demo API</h3>
+            <div>served by quarkus through the nginx reverse proxy for all requests starting with /api/</div>
             <ul>
-                <li><a href="./app.html">Demo School Table</a></li>
                 <li><a href="./api/person">persons</a></li>
                 <li><a href="./api/person/1">1st person</a></li>
                 <li><a href="./api/school">schools</a></li>
