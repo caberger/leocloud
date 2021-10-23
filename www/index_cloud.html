@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="<%= options.baseHref %>">
+    <!--<base href="https://student.cloud.htl-leonding.ac.at/c.aberger/"/>-->
+    <title>Leocloud Jakarta EE Demo</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="icon" href="images/logo.png"/>
+    <style>
+        body,h1 {font-family: "Raleway", sans-serif}
+        body, html {height: 100%}
+        .bgimg {
+            background-image: url('images/forestbridge.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+        }
+        a:link {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        <img src="https://www.htl-leonding.at/wp-content/uploads/2018/12/htllogo.png" width="240px">
+    </div>
+    <div class="w3-display-middle">
+        <h1 class="w3-jumbo w3-animate-top">LEOCLOUD DEMO</h1>
+        <!--<hr class="w3-border-grey" style="margin:auto;width:40%">-->
+        <div class="w3-container w3-large w3-center" style="margin:auto;width:480px">
+            <div class="w3-panel">
+                <ul class="w3-ul">
+                    <li>
+                        <a href="app.html?api-url=api">REST Client mit nativem Quarkus Backend</a>
+                    </li>
+                    <li>
+                        <a href="app.html?api-url=app">REST Client mit Nodejs Backend</a>
+                    </li>
+                    <li>
+                        <a href="api/app/persons">Serverseitiges Templating</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="w3-display-bottomleft w3-padding-large">
+        <a href="https://aberger.at/blog/cloud/2021/05/04/minikube-intro.html" target="_blank">c.aberger</a>
+    </div>
+</div>
+
+</body>
+</html>
