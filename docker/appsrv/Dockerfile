@@ -4,12 +4,12 @@ RUN microdnf install nmap
 #RUN apk update && apk add bash netcat-openbsd
 
 RUN mkdir /usr/local/bin/application
-COPY deployments/* /usr/local/bin/application/
+COPY deployments/*-runner /usr/local/bin/application/application
 COPY scripts/* /usr/local/bin/application/
 RUN sed -e 's/\r$//' -i /usr/local/bin/application/*.sh && chmod +x /usr/local/bin/application/*.sh
-RUN chmod +x /usr/local/bin/application/*-runner
+RUN chmod +x /usr/local/bin/application/application
 
 EXPOSE 8080
 
 WORKDIR /usr/local/bin/application
-CMD ["./run-native.sh"]
+CMD ["./application"]
