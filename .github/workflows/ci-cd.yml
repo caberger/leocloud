@@ -54,11 +54,11 @@ jobs:
         ls -l
         tar -xzf graalvm.tgz
         mv graalvm-* graalvm
-        export GRAALVM_HOME=/usr/local/bin/graalvm/bin
+        export GRAALVM_HOME=/usr/local/graalvm
         export PATH=$GRAALVM_HOME/bin:$PATH
-        /usr/local/bin/graalvm/bin/gu install native-image
-        echo "GRAALVM_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
-      working-directory: /usr/local/bin
+        gu install native-image
+        echo "GRAALVM_HOME=/usr/local/graalvm" >> $GITHUB_ENV
+      working-directory: /usr/local
 
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
