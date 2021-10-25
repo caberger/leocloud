@@ -1,23 +1,26 @@
 # Bare Metal Cloud Example
 
+Example Project that demonstrates the CI/CD toolchain to automatically deploy an application to a remote server.
+On every push in the master branch it automatically does the following:
+
+- compile all parts using Github actions
+- build the docker images on the github runner
+- push the created docker images to the github container registry
+- log into the remote server by ssh
+- pull the docker images on the remote server
+- start up the application on the server using docker-compose
+
+
+## Deployment
+
 The following services are deployed on the remote server:
 
 - [nginx](https://www.nginx.com/) http server
-- [quarkus](http://quarkus.io/) JEE - Application Server
+- [quarkus](http://quarkus.io/) Microprofile Application Server
 - [mysql](https://www.mysql.com/) Database Server
+- a small demo website written in typescript
 
-nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications.
-
-
-## Enterprise Service Stack
-This example shows how to :
-- build a Java REST Server (quarkus)
-- create a docker image from it
-- push this image to the github container registry
-- add a reverse proxy to efficiently serve html and javascript and protect the application server
-- log into a remote server and pull that docker image on the remote server
-- install a docker-compose.yml file to start this stack
-
+nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications. Additionally nginx also serves the [web page](./www/readme.md) (html/css/js built with [webpack](https://webpack.js.org/)).
 
 
 ## Preparation of your repository

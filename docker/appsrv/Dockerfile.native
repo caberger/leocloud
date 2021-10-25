@@ -1,4 +1,6 @@
 FROM alpine:latest
+RUN apt update && apt install -y netcat && apt clean
+
 WORKDIR /usr/local/bin
 COPY deployments/*-runner /usr/local/bin/application
 RUN chmod 775 /usr/local/bin/application
