@@ -19,7 +19,7 @@ sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compo
 
 docker-compose stop
 systemctl restart docker # <-- ensure no ports have remained open
-
+netstat -ant
 docker container prune --force
 docker image prune --force
 
