@@ -45,13 +45,15 @@ and pull the docker image using commands like this:
 For details see the [github action](.github/workflows/ci-cd.yml) in this project.
 
 ## Service Startup
-A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to /usr/local/bin/application on the destination server. The services can be started on the server with:
+A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to /usr/local/bin/application on the destination server. The services can be started manually on the server with:
 ~~~bash
 pushd /usr/local/bin/application
-docker-compose up --build
+docker-compose up
 ~~~
 
-The rest is straight forward: 
-- you should add a systemctl service file to automatically start that docker-compose on system boot, stop it before pulling the images and start it again after pulling.
+## auto start service at system boot 
 
+When you want to start services at boot time please read [this](./distribution/server/readme.md).
+
+## Cloud
 To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [this project](https://github.com/caberger/javafx-cdi-jpa)

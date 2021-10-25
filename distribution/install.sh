@@ -17,6 +17,7 @@ cp $SCRIPT_DIR/* .
 
 sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compose-production.yml > docker-compose.yml
 
+systemctl stop docker-compose || echo "docker-compose service not installed"
 docker-compose down
 systemctl restart docker # <-- ensure no ports have remained open
 netstat -ant
@@ -33,5 +34,5 @@ docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
 
 docker image ls
 docker-compose pull
-docker-compose up --detach
+systemctl start docker-compose || docker-compose up --detach
 popd
