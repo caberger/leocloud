@@ -93,7 +93,7 @@ jobs:
       run: npm run build.quarkus
       working-directory: www
 
-    - name: build with Maven
+    - name: native Maven build (will last long - better use jdk build for development)
       run: |
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
