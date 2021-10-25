@@ -90,7 +90,7 @@ jobs:
       working-directory: www
 
     - name: build web application
-      run: npm run build.quarkus
+      run: npm run build
       working-directory: www
 
     - name: native Maven build (will last long - better use jdk build for development)
