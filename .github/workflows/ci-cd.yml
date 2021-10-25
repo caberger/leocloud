@@ -54,7 +54,7 @@ jobs:
         ls -l
         tar -xzf graalvm.tgz
         mv graalvm-* graalvm
-        echo "GRAAL_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
+        echo "GRAALVM_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
       working-directory: /usr/local/bin
 
     - name: Setup tmate session (for debugging only)
@@ -91,6 +91,7 @@ jobs:
 
     - name: build with Maven
       run: |
+        echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
 
     - name: build docker images
