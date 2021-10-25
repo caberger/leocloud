@@ -8,5 +8,7 @@ while ! nc -z mysql 3306; do
 done
 
 echo "starting quarkus $RUNNER..."
+pwd
+ls -l
 ./$RUNNER
 

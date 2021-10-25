@@ -1,5 +1,5 @@
-FROM alpine:3
-RUN apk update && apk add netcat-openbsd bash
+FROM registry.access.redhat.com/ubi8/ubi-minimal
+RUN microdnf install nmap
 
 RUN mkdir /usr/local/bin/application
 

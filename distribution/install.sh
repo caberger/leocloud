@@ -17,7 +17,7 @@ cp $SCRIPT_DIR/* .
 
 sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compose-production.yml > docker-compose.yml
 
-docker-compose stop
+docker-compose down
 systemctl restart docker # <-- ensure no ports have remained open
 netstat -ant
 docker container prune --force
@@ -32,5 +32,6 @@ docker rmi -f $(docker images -q)
 docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
 
 docker image ls
-docker-compose up --build --detach
+docker-compose pull
+docker-compose up --detach
 popd
