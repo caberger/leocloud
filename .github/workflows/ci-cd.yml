@@ -17,7 +17,7 @@ on:
 env:
   REGISTRY: ghcr.io
   DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
-  GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java17-linux-amd64-21.3.0.tar.gz
+  GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 
 jobs:
   build:
@@ -68,7 +68,7 @@ jobs:
     - uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
-        java-version: '17'
+        java-version: '11'
 
     - uses: actions/checkout@v2
 
