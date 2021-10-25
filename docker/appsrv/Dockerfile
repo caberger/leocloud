@@ -1,5 +1,5 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal
-#RUN microdnf update && microdnf install curl && microdnf clean all
+RUN microdnf update && microdnf install curl && microdnf clean all
 
 RUN mkdir /usr/local/bin/application
 COPY deployments/*-runner /usr/local/bin/application/application
@@ -10,4 +10,4 @@ RUN chmod +x /usr/local/bin/application/application
 EXPOSE 8080
 
 WORKDIR /usr/local/bin/application
-CMD ["./application"]
+CMD ["./run-native.sh"]
