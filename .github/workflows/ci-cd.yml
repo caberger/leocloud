@@ -49,16 +49,17 @@ jobs:
 
     - name: install graal vm
       run: |
-        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
         pwd
+        ls -ld .
+        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
         ls -l
         tar -xzf graalvm.tgz
         mv graalvm-* graalvm
-        export GRAALVM_HOME=/usr/local/graalvm
+        export GRAALVM_HOME=/opt/graalvm
         export PATH=$GRAALVM_HOME/bin:$PATH
         gu install native-image
-        echo "GRAALVM_HOME=/usr/local/graalvm" >> $GITHUB_ENV
-      working-directory: /usr/local
+        echo "GRAALVM_HOME=/opt/graalvm" >> $GITHUB_ENV
+      working-directory: /opt
 
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
