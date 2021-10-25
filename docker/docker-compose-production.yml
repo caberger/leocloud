@@ -20,9 +20,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 60s
         max_attempts: 3
-        window: 120s    
     ports:
       - 8080:8080
     expose:
@@ -34,9 +32,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 60s
         max_attempts: 3
-        window: 120s    
     ports:
       - 80:80
     depends_on:
