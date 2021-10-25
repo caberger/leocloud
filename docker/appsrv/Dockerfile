@@ -1,7 +1,5 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal
-RUN microdnf install nmap
-#FROM alpine:3
-#RUN apk update && apk add bash netcat-openbsd
+#RUN microdnf update && microdnf install curl && microdnf clean all
 
 RUN mkdir /usr/local/bin/application
 COPY deployments/*-runner /usr/local/bin/application/application

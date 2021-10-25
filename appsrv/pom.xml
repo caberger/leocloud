@@ -2,22 +2,20 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>at.ac.htl-leonding.leocloud</groupId>
     <artifactId>leocloud-demo-app</artifactId>
     <version>0.0.1</version>
   </parent>
-  <packaging>jar</packaging>
   <groupId>at.ac.htl-leonding.leocloud</groupId>
   <artifactId>leocloud-quarkus</artifactId>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    <cucumber.version>6.8.1</cucumber.version>
+    <junit.version>4.13.2</junit.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <cucumber.version>6.8.1</cucumber.version>
-    <junit.version>4.13.2</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus-plugin.version>2.3.1.Final</quarkus-plugin.version>
@@ -37,7 +35,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <dependencies>  
+  <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-orm</artifactId>
@@ -67,6 +65,10 @@
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
     </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>

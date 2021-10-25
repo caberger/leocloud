@@ -8,7 +8,11 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_ROOT_HOST: '%' 
+      MYSQL_ROOT_HOST: '%'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 2s
+      retries: 100       
     ports:
       - 3306:3306
     expose:
@@ -21,12 +25,17 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
+      timeout: 5s
+      retries: 100
     ports:
       - 8080:8080
     expose:
       - 8080
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
   nginx:
     build: nginx
     deploy:
@@ -36,6 +45,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - appsrv
+      appsrv:
+        condition: service_healthy
 volumes:
   database:

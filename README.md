@@ -16,12 +16,11 @@ On every push in the master branch it automatically does the following:
 The following services are deployed on the remote server:
 
 - [nginx](https://www.nginx.com/) http server
-- [quarkus](http://quarkus.io/) Microprofile Application Server
+- [quarkus](http://quarkus.io/) supersonic Microprofile Application Server ([native build](https://quarkus.io/guides/building-native-image))
 - [mysql](https://www.mysql.com/) Database Server
 - a small demo website written in typescript
 
 nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications. Additionally nginx also serves the [web page](./www/readme.md) (html/css/js built with [webpack](https://webpack.js.org/)).
-
 
 ## Preparation of your repository
 
