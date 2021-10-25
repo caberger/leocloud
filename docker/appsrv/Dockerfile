@@ -1,7 +1,7 @@
 FROM alpine:3
 RUN apk update && apk add netcat-openbsd
 
-WORKDIR /usr/local/bin
+WORKDIR /usr/local/bin/application
 COPY deployments/*-runner /usr/local/bin/application
 RUN chmod 775 /usr/local/bin/application
 
