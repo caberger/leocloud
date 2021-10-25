@@ -36,4 +36,4 @@ release.properties
 .DS_Store
 maven-wrapper.*
 .maven
-
+.factorypath
