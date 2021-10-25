@@ -1,5 +1,5 @@
 FROM alpine:3
-RUN apk -y update && apt install -y netcat && apt clean
+RUN apk update && apk add netcat-openbsd
 
 WORKDIR /usr/local/bin
 COPY deployments/*-runner /usr/local/bin/application
