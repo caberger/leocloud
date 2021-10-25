@@ -52,7 +52,7 @@ jobs:
         curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
         pwd
         ls -l
-        tar -xzf grallvm.tgz
+        tar -xzf graalvm.tgz
         mv graalvm-* graalvm
         echo "GRAAL_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
       working-directory: /usr/local/bin
