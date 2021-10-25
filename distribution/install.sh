@@ -2,32 +2,33 @@
 
 # this script is copied to the server and executed on the remote server for installation
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 GITHUB_USER=$1
 ACCESS_TOKEN=$2
 IMAGE=$3
 SERVER_USER=$4
+REGISTRY_ESCAPED=$(echo $REGISTRY| sed -e "s/\//\\\\\//g")
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-echo "dir $SCRIPT_DIR"
 mkdir -p /usr/local/bin/application
-
 pushd /usr/local/bin/application
 pwd
 cp $SCRIPT_DIR/* .
+
+sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}leocloud\-\1/g" docker-compose-production.yml > docker-compose.yml
 
 docker-compose down
 docker container prune --force
 docker image prune --force
 
+#remove the next line if you have existing data in the database:
+docker volume prune --force
+
+echo "rmi..."
+docker rmi -f $(docker images -q)
+
 docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
-docker pull $IMAGE-appsrv:latest
-docker tag $IMAGE-appsrv:latest leo-appsrv
-
-docker pull $IMAGE-nginx:latest
-docker tag $IMAGE-nginx:latest leo-nginx
-
-echo "prune images..."
 
 docker image ls
-docker-compose up --detach
+docker-compose up --build --detach
 popd

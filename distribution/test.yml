@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_HOST: '%' 
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - database:/var/lib/
+  appsrv:
+    image: leo-appsrv
+    restart: always
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - mysql
+  nginx:
+    image: leo-nginx
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - appsrv
+volumes:
+  database:
