@@ -17,7 +17,9 @@ cp $SCRIPT_DIR/* .
 
 sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compose-production.yml > docker-compose.yml
 
-docker-compose down
+docker-compose stop
+systemctl restart docker # <-- ensure no ports have remained open
+
 docker container prune --force
 docker image prune --force
 

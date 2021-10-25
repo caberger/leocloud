@@ -1,5 +1,5 @@
 FROM alpine:3
-RUN apk update && apk add netcat-openbsd
+RUN apk update && apk add netcat-openbsd bash
 
 RUN mkdir /usr/local/bin/application
 
