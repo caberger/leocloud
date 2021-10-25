@@ -54,6 +54,9 @@ jobs:
         ls -l
         tar -xzf graalvm.tgz
         mv graalvm-* graalvm
+        export GRAALVM_HOME=/usr/local/bin/graalvm/bin
+        export PATH=$GRAALVM_HOME/bin:$PATH
+        /usr/local/bin/graalvm/bin/gu install native-image
         echo "GRAALVM_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
       working-directory: /usr/local/bin
 
