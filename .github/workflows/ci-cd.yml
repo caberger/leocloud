@@ -35,9 +35,9 @@ jobs:
         server: ${{ secrets.SERVER }}
         alias: server
 
-    - name: shutdown the app on server early if it is already running.
+    - name: shutdown the app on the server early if it is already running.
       run: |
-        ssh server "pushd /usr/local/bin/application && (docker-compose down || echo 'not running')&"
+        ssh server "(pushd /usr/local/bin/application && docker-compose down)&"
 
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -80,7 +80,7 @@ jobs:
 
     - name: build with Maven
       run: |
-        mvn -Dquarkus-profile=prod -Dbase.href="/" -B package
+        mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
 
     - name: build docker images
       run: |
