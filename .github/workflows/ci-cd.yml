@@ -86,7 +86,10 @@ jobs:
       with:
         node-version: '14'
     - name: install node dependencies
-      run: npm install
+      run: |
+        npm install
+        npm install cowsay
+        npx cowsay reverse proxy?!
       working-directory: www
 
     - name: build web application
