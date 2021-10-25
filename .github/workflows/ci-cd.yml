@@ -47,6 +47,16 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
+    - name: install graal vm
+      run: |
+        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
+        pwd
+        ls -l
+        tar -xzf grallvm.tgz
+        mv graalvm-* graalvm
+        echo "GRAAL_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
+      working-directory: /usr/local/bin
+
     - name: Setup tmate session (for debugging only)
       uses: mxschmitt/action-tmate@v3
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
@@ -78,16 +88,6 @@ jobs:
     - name: build web application
       run: npm run build.quarkus
       working-directory: www
-
-    - name: install graal vm
-      run: |
-        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
-        mv graalvm-* graalvm
-        pwd
-        ls -l
-        tar -xzf grallvm.tgz
-        echo "GRAAL_HOME=/usr/local/bin/graalvm/bin" >> $GITHUB_ENV
-      working-directory: /usr/local/bin
 
     - name: build with Maven
       run: |
