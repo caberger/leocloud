@@ -66,6 +66,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-m2-
 
+    - name: cache node_modules (html)
+      uses: actions/cache@v2
+      with:
+        path: './www//node_modules'
+        key: ${{ runner.os }}-www-node-modules-v0.0.1-${{ hashFiles('./www/package.json') }}
+
     - name: install nodejs
       uses: actions/setup-node@v2
       with:

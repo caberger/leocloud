@@ -72,9 +72,10 @@ docker image ls
 
 if [[ $REBOOT -eq 0 ]]
 then
-    systemctl start docker-compose || docker-compose up --detach
+    systemctl start docker-compose&
 else
     echo "reboot has been scheduled, bye!"
-    reboot +1
+    nohup reboot &>/dev/null
 fi
 popd
+exit
