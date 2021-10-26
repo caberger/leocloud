@@ -1,6 +1,6 @@
 # The Canonical Application
 
-This is an example Project that demonstrates the [CI/CD](https://martinfowler.com/bliki/ContinuousDelivery.html) toolchain to automatically build and deploy an application to a production server.
+This is an example project that demonstrates the [CI/CD](https://martinfowler.com/bliki/ContinuousDelivery.html) toolchain to automatically build and deploy an application to a production server.
 On every push in the master branch the following actions are performed automatically to [continousely deploy](https://en.wikipedia.org/wiki/Continuous_deployment) the full system:
 
 - compile all parts using Github actions
@@ -16,11 +16,11 @@ On every push in the master branch the following actions are performed automatic
 The following services are deployed on the production server:
 
 - [nginx](https://www.nginx.com/) http server
-- [quarkus](http://quarkus.io/) supersonic Microprofile Application Server ([native build](https://quarkus.io/guides/building-native-image))
+- [quarkus](http://quarkus.io/) supersonic Microprofile Application Server ([native build via GraalVM](https://quarkus.io/guides/building-native-image))
 - [mysql](https://www.mysql.com/) Database Server
-- a small demo website written in typescript compiled with webpack.
+- a small demo website written in typescript compiled with [webpack](https://webpack.js.org/)).
 
-nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications. Additionally nginx also serves the [web page](./www/readme.md) (html/css/js built with [webpack](https://webpack.js.org/)).
+nginx is configured to be a reverse proxy for the Application Server, so that there is no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issue when deploying javascript applications. Additionally nginx also serves the [web page](./www/readme.md).
 
 ## Preparation of your repository
 
