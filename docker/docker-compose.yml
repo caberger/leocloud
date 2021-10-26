@@ -1,3 +1,4 @@
+# docker file for local development and debugging
 version: '3.3'
 services:
   mysql:
@@ -16,7 +17,9 @@ services:
     volumes:
       - database:/var/lib/
   appsrv:
-    build: appsrv
+    build: 
+      context: ./appsrv
+      dockerfile: Dockerfile.jvm
     deploy:
       restart_policy:
         condition: on-failure
@@ -34,7 +37,7 @@ services:
         condition: on-failure
         max_attempts: 3
     ports:
-      - 80:80
+      - 4000:80
     depends_on:
       - appsrv
 volumes:

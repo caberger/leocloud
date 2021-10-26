@@ -13,6 +13,7 @@
             <directory>../docker</directory>
             <includes>
                 <include>docker-compose-production.yml</include>
+                <include>docker-compose.yml</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -26,6 +27,7 @@
             <directory>../docker/appsrv</directory>
             <includes>
                 <include>Dockerfile</include>
+                <include>Dockerfile.jvm</include>
                 <include>scripts/*</include>
             </includes>
         </fileSet>
@@ -41,10 +43,11 @@
             <directory>../appsrv/target</directory>
             <outputDirectory>../docker/appsrv/deployments</outputDirectory>
             <includes>
-                <include>*-runner*</include>
+                <include>*-runner</include>
+                <include>leocloud-*.jar</include>
             </includes>
         </fileSet>
-       <fileSet>
+        <fileSet>
             <directory>../www/target/</directory>
             <outputDirectory>../docker/nginx/html</outputDirectory>
             <includes>
@@ -53,6 +56,14 @@
             <excludes>
                 <exclude>**/*.map</exclude>
             </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>./server</directory>
+            <outputDirectory>server</outputDirectory>
+            <includes>
+                <include>docker-compose.service</include>
+                <include>readme.md</include>
+            </includes>
         </fileSet>
     </fileSets>
 </assembly>
