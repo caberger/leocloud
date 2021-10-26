@@ -1,3 +1,5 @@
+# this docker file ist deployed on the remote server
+
 version: '3.3'
 services:
   mysql:

@@ -3,6 +3,7 @@
 This folder contains the file for the deployment on the production server and a docker-compose.yml file for running the application on docker on the local machine for debugging.
 To debug on the  local machine you can run the following in the project root folder: 
 
+## Local Debugging using uber-jar
 ~~~bash
 mvn clean -DskipTests clean package -Dquarkus.package.type=uber-jar
 cd distribution/target/distribution-0.0.1-dist/docker/

@@ -29,8 +29,10 @@
             <div><a href="./app.html" target="_blank">Demo School Table</a> using typescript via webpack, directly served by nginx</div>
 
             <h3>Demo API</h3>
-            <p>You can browse the REST api <a href="./q/swagger-ui/">here</a> or <a href="./q/openapi/" download="openapi.yml">download it</a>. You can also check the <a href="./health">health</a>.
-            It is served by quarkus through the nginx reverse proxy for all requests starting with /api/. </p>
+            <p>
+                You can browse the REST api <a href="./q/swagger-ui/">here</a> or download its <a href="./q/openapi/" download="openapi.yml">OpenAPI specification</a>. You can also check the <a href="./health">health of the server</a>.
+                The API is served by quarkus through the nginx reverse proxy for all requests starting with /api/. An example for server-side rendered HTML can be found <a href="./api/app/persons">here</a>.
+            </p>
             <h4>Data in the demo database</h4>
             <ul>
                 <li><a href="./api/person">persons</a></li>
@@ -38,8 +40,6 @@
                 <li><a href="./api/school">schools</a></li>
                 <li><a href="./api/school/1">1st school</a></li>
             </ul>
-            <h4>Qute Temlate</h4>
-            <div>An example for server rendered HTML can be found <a href="./api/app/persons">here</a>.</div>
         </article>
         <div class="row">
             <button id="github">github</button>
