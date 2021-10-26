@@ -21,6 +21,7 @@ cp $SCRIPT_DIR/* .
 if [[ ! -f $SERVICE_SCRIPT ]]
 then
     cp $SCRIPT_DIR/server/*.service $SERVICE_SCRIPT_DESTINATION
+    systemctl daemon-reload
     systemctl enable SERVICE_SCRIPT
 fi
 
