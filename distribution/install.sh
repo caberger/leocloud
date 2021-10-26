@@ -75,7 +75,7 @@ then
     systemctl start docker-compose&
 else
     echo "reboot has been scheduled, bye!"
-    nohup reboot &>/dev/null
+    nohup shutdown -r 60 "reboot by install script due to package installation"
 fi
 popd
 exit
