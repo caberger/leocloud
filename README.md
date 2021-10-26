@@ -1,4 +1,4 @@
-# Bare Metal Cloud Example
+# The Canonical Application
 
 Example Project that demonstrates the CI/CD toolchain to automatically deploy an application to a remote server.
 On every push in the master branch it automatically does the following:
@@ -31,6 +31,18 @@ You must set the following Github secrets:
 | SERVER_USER            | the username used to login into the remote server              |
 | SERVER                 | IP Address or the hostname of the remote server                |
 | [REGISTRY_ACCESS_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)  | the access token to the github container registry              |
+
+## About the sudo on your server
+
+The user that is used for logging into the server must have sudoers permission to be able to use sudo without
+entering a password. 
+If this is not the case add a file named *90-leocloud-users* to */etc/sudoers.d/* with the following content:
+
+~~~
+ubuntu ALL=(ALL) NOPASSWD:ALL
+~~~
+
+If your user name is not ubuntu, then use your username instead of *ubuntu* in the line above.
 
 ## About login to ghcr.io
 

@@ -8,14 +8,15 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 MARKER_FILE="already-installed.txt"
 DOCKER_USER=$1
 
-if [[ -f $MARKER_FILE]]
+if [[ -f $MARKER_FILE ]]
 then
     echo "$MARKER_FILE exists, do nothing"
+    cat $MARKER_FILE
 else
     apt -y update || (echo "update failed" && exit 1)
     apt -y install docker-compose net-tools ||  (echo "installation failed" && exit 2)
     usermod -aG docker $DOCKER_USER || exit 3
-    echo "package installation successful" > $MARKER_FILE
+    echo "initial package installation done sucessfully at $(date)" > $MARKER_FILE
 fi
 exit
 
