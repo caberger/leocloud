@@ -8,7 +8,7 @@ GITHUB_USER=$1
 ACCESS_TOKEN=$2
 IMAGE=$3
 SERVER_USER=$4
-REGISTRY_ESCAPED=$(echo $IMAGE| sed -e "s/\//\\\\\//g")
+REGISTRY_ESCAPED=$(echo $IMAGE | sed -e "s/\//\\\\\//g")
 DESTINATION=/usr/local/bin/application
 
 SERVICE_SCRIPT=docker-compose.service
@@ -36,7 +36,7 @@ fi
 pushd $DESTINATION
 cp -r $SCRIPT_DIR/* .
 
-if [[ ! -f $SERVICE_SCRIPT ]]
+if [[ ! -f $SERVICE_SCRIPT_DESTINATION ]]
 then
     echo "installing $SERVICE_SCRIPT_DESTINATION..."
     cp $SCRIPT_DIR/server/*.service $SERVICE_SCRIPT_DESTINATION
@@ -44,7 +44,7 @@ then
     systemctl daemon-reload
     systemctl enable $SERVICE_SCRIPT
 else
-    echo "$SERVICE_SCRIPT_DESTINATION, leave it untouched"
+    echo "$SERVICE_SCRIPT_DESTINATION exists, leave it untouched"
 fi
 
 sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compose-production.yml > docker-compose.yml

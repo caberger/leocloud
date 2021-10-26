@@ -69,8 +69,8 @@ A [systemctl](https://www.redhat.com/sysadmin/getting-started-systemctl) service
 
 The services can be restarted manually and the log can be seen with:
 ~~~bash
-sudo systemctl restart docker-compose
 cd /usr/local/bin/application
+sudo systemctl restart docker-compose
 docker-compose logs -f
 ~~~
 

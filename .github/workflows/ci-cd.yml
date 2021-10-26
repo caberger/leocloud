@@ -36,9 +36,8 @@ jobs:
         server: ${{ secrets.SERVER }}
         alias: server
 
-    - name: shutdown the app on the server early if it is already running.
-      run: |
-        ssh server "(pushd /usr/local/bin/application && docker-compose down)&"
+    - name: verify ssh key
+      run: ssh server ls -l
 
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
