@@ -68,11 +68,11 @@ docker rmi -f $(docker images -q)
 echo $ACCESS_TOKEN | docker login --username $GITHUB_USER --password-stdin
 
 docker image ls
-#docker-compose pull
+docker-compose pull
 
 if [[ $REBOOT -eq 0 ]]
 then
-    systemctl start docker-compose&
+    systemctl start docker-compose
 else
     echo "reboot has been scheduled, bye!"
     nohup sudo shutdown -r 1 "reboot by install script due to package installation" </dev/null &>/dev/null &
