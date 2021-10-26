@@ -5,19 +5,26 @@
 # requirements: the user must be able to execute sudo without a password
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-MARKER_FILE="already-installed.txt"
+MARKER_FILE=already-installed.txt
 DOCKER_USER=$1
 
+pushd $SCRIPT_DIR
+pwd
+ls -l
 if [[ -f $MARKER_FILE ]]
 then
-    echo "$MARKER_FILE exists, do nothing"
     cat $MARKER_FILE
+    echo "$MARKER_FILE exists, do nothing"
 else
     apt -y update || (echo "update failed" && exit 1)
     apt -y upgrade
     apt -y install docker-compose net-tools ||  (echo "installation failed" && exit 2)
-    usermod -aG docker $DOCKER_USER || exit 3
+    echo "add user to docker group..."
+    usermod -aG docker $DOCKER_USER || echo "usermod not required"
+    echo "write marker file..."
     echo "initial package installation done sucessfully at $(date)" > $MARKER_FILE
+    echo "setup done."
 fi
-exit
+popd
+
 
