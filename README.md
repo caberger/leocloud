@@ -24,8 +24,9 @@ nginx is configured to be a reverse proxy for the Application Server, so that th
 
 ## Preparation of your repository
 
-The github runner needs access to your server. So you must specify the hostname or IP-Adress of the server, ther username with sudo permission to log in and the private key used for that.
-The user must be able to sudo without password, see below. The runner also needs a token to push docker images to your repository. Of course we do not check in all that credentials in cleartext, but use github secrets for that purpose.
+The github runner needs access to your server. So you must specify the hostname or IP-Adress of the server, the username with sudo permission to log in and the private key used for that.
+The user must be able to sudo without password, see below. The runner also needs a token to push docker images to your repository.
+Of course we do not check in all that credentials in cleartext, but use [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for that purpose.
 
 You must set the following Github secrets: 
 | Name                    | Description     |
@@ -35,23 +36,23 @@ You must set the following Github secrets:
 | SERVER                 | IP Address or the hostname of the server                |
 | [REGISTRY_ACCESS_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)  | the access token to the github container registry              |
 
-## About the sudo on your server
+## About sudo on your server
 
-We assume that you use an ubuntu distribution, otherwise  you must change the setup-server.sh script to use a different package manager.
+We assume that you use an ubuntu distribution, otherwise you must change the `setup-server.sh` script to use a different package manager.
 
-The user that is used for logging into the server must have sudoers permission to be able to use sudo without
+The user that is used to log into the server must have [sudo](https://manpages.ubuntu.com/manpages/xenial/man8/sudo.8.html) permission to be able to use sudo without
 entering a password. 
-If this is not the case add a file named *90-leocloud-users* to */etc/sudoers.d/* with the following content:
+If this is not the case add a file named `90-leocloud-users` to `/etc/sudoers.d/` with the following content:
 
 ~~~
 ubuntu ALL=(ALL) NOPASSWD:ALL
 ~~~
 
-If your user name is not ubuntu, then use your username instead of *ubuntu* in the line above.
+If your user name is not ubuntu, then use your username instead of `ubuntu` in the line above.
 
 ## About login to ghcr.io
 
-The github action will [ssh into the remote server](https://github.com/caberger/install-ssh-key), log into the container registry
+The github action will [ssh into the remote server](https://github.com/caberger/install-ssh-key), log into the [github container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 and pull the docker image using commands like this:
 
 ~~~bash
@@ -62,8 +63,9 @@ docker pull ...
 For details see the [github action](.github/workflows/ci-cd.yml) in this project.
 
 ## Service Startup
-A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to /usr/local/bin/application on the destination server. 
-A systemctl service __docker-compose.service__ is installed to /lib/systemd/system and enabled automatically on the production server, so the application starts up on system boot.
+A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to `/usr/local/bin/application` on the destination server. 
+A [systemctl](https://www.redhat.com/sysadmin/getting-started-systemctl) service
+`docker-compose.service` is installed to `/lib/systemd/system` and enabled automatically on the production server, so the application starts up on system boot.
 
 The services can be restarted manually and the log can be seen with:
 ~~~bash
