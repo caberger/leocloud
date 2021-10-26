@@ -10,6 +10,7 @@ IMAGE=$3
 SERVER_USER=$4
 REGISTRY_ESCAPED=$(echo $IMAGE | sed -e "s/\//\\\\\//g")
 DESTINATION=/usr/local/bin/application
+REBOOT=0
 
 SERVICE_SCRIPT=docker-compose.service
 SERVICE_SCRIPT_DESTINATION=/lib/systemd/system/$SERVICE_SCRIPT
@@ -30,7 +31,8 @@ else
     usermod -aG docker $SERVER_USER || echo "usermod not required"
     echo "write marker file..."
     echo "initial package installation done sucessfully at $(date)" > $MARKER_FILE
-    echo "setup done."
+    echo "setup done. To be sure we will reboot later."
+    let REBOOT=1
 fi
 
 pushd $DESTINATION
@@ -66,6 +68,13 @@ docker rmi -f $(docker images -q)
 echo $ACCESS_TOKEN | docker login --username $GITHUB_USER --password-stdin
 
 docker image ls
-docker-compose pull
-systemctl start docker-compose || docker-compose up --detach
+#docker-compose pull
+
+if [[ $REBOOT -eq 0 ]]
+then
+    systemctl start docker-compose || docker-compose up --detach
+else
+    echo "reboot has been scheduled, bye!"
+    reboot +1
+fi
 popd
