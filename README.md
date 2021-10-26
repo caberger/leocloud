@@ -62,9 +62,10 @@ docker pull ...
 For details see the [github action](.github/workflows/ci-cd.yml) in this project.
 
 ## Service Startup
-A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to /usr/local/bin/application on the destination server. A systemctl service __docker-compose__ is installed and enabled automatically on the production server, so the application starts up on system boot.
+A [docker-compose.yml](https://docs.docker.com/compose/) file is copied to /usr/local/bin/application on the destination server. 
+A systemctl service __docker-compose.service__ is installed to /lib/systemd/system and enabled automatically on the production server, so the application starts up on system boot.
 
-The services can be restarted manually and watched with:
+The services can be restarted manually and the log can be seen with:
 ~~~bash
 sudo systemctl restart docker-compose
 cd /usr/local/bin/application
@@ -73,7 +74,8 @@ docker-compose logs -f
 
 # About the firewall
 
-Make sure that you open port 80 on your firewall. All traffic goes through this port. If you add want to use https, you must add a certificate to nginx, expose it on port 443 and open port 443 on your firewall instread.
+Make sure that you open port 80 on your firewall. All traffic goes through this port. If you want to use https,
+you must [add a certificate](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx) to nginx, expose it on port 443 and open port 443 on your firewall instead of port 80.
 
 ## Cloud
 To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [this project](https://github.com/caberger/javafx-cdi-jpa)
