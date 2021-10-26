@@ -1,8 +1,7 @@
 # The Canonical Application
 
-This is an example Project that demonstrates the CI/CD toolchain to automatically
-build and deploy an application to a production server.
-On every push in the master branch the following actions are performed automatically:
+This is an example Project that demonstrates the [CI/CD](https://martinfowler.com/bliki/ContinuousDelivery.html) toolchain to automatically build and deploy an application to a production server.
+On every push in the master branch the following actions are performed automatically to [continousely deploy](https://en.wikipedia.org/wiki/Continuous_deployment) the full system:
 
 - compile all parts using Github actions
 - build the docker images on the github runner
