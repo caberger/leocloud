@@ -9,13 +9,31 @@ ACCESS_TOKEN=$2
 IMAGE=$3
 SERVER_USER=$4
 REGISTRY_ESCAPED=$(echo $IMAGE| sed -e "s/\//\\\\\//g")
+DESTINATION=/usr/local/bin/application
 
 SERVICE_SCRIPT=docker-compose.service
 SERVICE_SCRIPT_DESTINATION=/lib/systemd/system/$SERVICE_SCRIPT
 
-mkdir -p /usr/local/bin/application
-pushd /usr/local/bin/application
-pwd
+MARKER_FILE=$DESTINATION/already-installed.txt
+
+mkdir -p $DESTINATION
+
+if [[ -f $MARKER_FILE ]]
+then
+    cat $MARKER_FILE
+    echo "$MARKER_FILE exists, do nothing"
+else
+    apt -y update || (echo "update failed" && exit 1)
+    apt -y upgrade
+    apt -y install docker-compose net-tools ||  (echo "installation failed" && exit 2)
+    echo "add user to docker group..."
+    usermod -aG docker $SERVER_USER || echo "usermod not required"
+    echo "write marker file..."
+    echo "initial package installation done sucessfully at $(date)" > $MARKER_FILE
+    echo "setup done."
+fi
+
+pushd $DESTINATION
 cp -r $SCRIPT_DIR/* .
 
 if [[ ! -f $SERVICE_SCRIPT ]]
