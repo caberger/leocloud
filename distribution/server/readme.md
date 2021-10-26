@@ -1,14 +1,15 @@
 # Installation on a root server
 
-## docker and docker-compose
-docker and docker-compose must be installed
+## base installation of a Centos Minimal System
+
+Install docker-compose, net-tools and logout to activate the membership in the docker group:
+~~~bash
+sudo apt -y update
+sudo apt -y install docker-compose net-tools
+sudo usermod -aG docker $USER
+exit
+~~~
 
 ## systemd service
 
-In order to start the application on boot you have to enable the docker-compose service by adding
-[docker-compose.service](./docker-compose.service) to /lib/systemd/system and enable it.
-
-~~~bash
-sudo cp docker-compose.service /lib/systemd/system
-systemctl enable docker-compose
-~~~
+In order to start the application automatically on every boot a [docker-compose.service](./docker-compose.service)  is added to /lib/systemd/system during the build.

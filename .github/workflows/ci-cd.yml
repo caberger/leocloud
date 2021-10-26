@@ -88,8 +88,6 @@ jobs:
     - name: install node dependencies
       run: |
         npm install
-        npm install cowsay
-        npx cowsay reverse proxy?!
       working-directory: www
 
     - name: build web application
@@ -121,4 +119,11 @@ jobs:
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+
+    - name: Goodbye!
+      run: |
+        npm install cowsay
+        npx cowsay quarkus ?!? reverse proxy??!
+      working-directory: www
+
 
