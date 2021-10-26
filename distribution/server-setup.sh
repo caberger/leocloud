@@ -14,6 +14,7 @@ then
     cat $MARKER_FILE
 else
     apt -y update || (echo "update failed" && exit 1)
+    apt -y upgrade
     apt -y install docker-compose net-tools ||  (echo "installation failed" && exit 2)
     usermod -aG docker $DOCKER_USER || exit 3
     echo "initial package installation done sucessfully at $(date)" > $MARKER_FILE
