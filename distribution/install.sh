@@ -16,20 +16,24 @@ SERVICE_SCRIPT_DESTINATION=/lib/systemd/system/$SERVICE_SCRIPT
 mkdir -p /usr/local/bin/application
 pushd /usr/local/bin/application
 pwd
-cp $SCRIPT_DIR/* .
+cp -r $SCRIPT_DIR/* .
 
 if [[ ! -f $SERVICE_SCRIPT ]]
 then
+    echo "installing $SERVICE_SCRIPT_DESTINATION..."
     cp $SCRIPT_DIR/server/*.service $SERVICE_SCRIPT_DESTINATION
+    ls -l $SERVICE_SCRIPT_DESTINATION
     systemctl daemon-reload
-    systemctl enable SERVICE_SCRIPT
+    systemctl enable $SERVICE_SCRIPT
+else
+    echo "$SERVICE_SCRIPT_DESTINATION, leave it untouched"
 fi
 
 sed -e "s/image\:\s*leo\-\(.*\)$/image\: ${REGISTRY_ESCAPED}\-\1/g" docker-compose-production.yml > docker-compose.yml
 
-systemctl stop docker-compose || echo "docker-compose service not active"
+echo "stop docker-compose..."
+systemctl stop docker-compose || docker-compose down || echo "docker-compose service not active"
 
-docker-compose down
 systemctl restart docker # <-- ensure no ports have remained open
 netstat -ant
 docker container prune --force
@@ -41,7 +45,7 @@ docker volume prune --force
 echo "rmi..."
 docker rmi -f $(docker images -q)
 
-docker login ghcr.io -u $GITHUB_USER -p $ACCESS_TOKEN
+echo $ACCESS_TOKEN | docker login --username $GITHUB_USER --password-stdin
 
 docker image ls
 docker-compose pull
