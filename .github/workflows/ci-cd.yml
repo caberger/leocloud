@@ -1,7 +1,4 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://aberger.at/blog/2021/05/29/cloud-startproject.html
-
-name: Build Application (master)
+name: build and deploy (master)
 
 on:
   push:
@@ -13,6 +10,10 @@ on:
         description: enable tmate console debugging     
         required: false
         default: "disabled"
+      build:
+        description: "'native' will build a quarkus native image via GraalVM"
+        required: false
+        default: "jvm"
        
 env:
   REGISTRY: ghcr.io
@@ -100,6 +101,7 @@ jobs:
       working-directory: /opt
 
     - name: build supersonic quarkus application
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.native == 'enabled' }}
       run: |
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
