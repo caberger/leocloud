@@ -20,13 +20,7 @@ env:
   GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 
 jobs:
-  checkout:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
   appsrv:
-    needs: checkout
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-java@v2
@@ -63,15 +57,32 @@ jobs:
       run: |
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+    - name: build appsrv docker image
+      run: |
+        docker build appsrv --tag ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+    - name: push appsrv docker image
+      run: |
+        docker push ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+
   www:
-    needs: checkout
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: cache node_modules (www)
       uses: actions/cache@v2
       with:
         path: './www//node_modules'
         key: ${{ runner.os }}-www-node-modules-v0.0.1-${{ hashFiles('./www/package.json') }}
+
     - name: install nodejs
       uses: actions/setup-node@v2
       with:
@@ -84,30 +95,24 @@ jobs:
     - name: build web application
       run: npm run build
       working-directory: www
-  docker-images:
-    needs: 
-    - appsrv
-    - www
-    runs-on: ubuntu-latest
-    steps:
     - name: Log in to the Container registry
       uses: docker/login-action@v1
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
-
-    - name: build docker images
+    - name: build nginx docker image
       run: |
-        ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
-        docker image ls
+        docker build nginx --tag ${{ env.REGISTRY }}/${{ github.repository }}-nginx
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
+    - name: push nginx docker image
+      run: |
+        docker push ${{ env.REGISTRY }}/${{ github.repository }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
-
-    - name: push docker images
-      run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
   install:
-    needs: docker-images
+    needs: 
+      - appsrv
+      - www
     runs-on: ubuntu-latest
     steps:
     - name: install ssh key
@@ -125,8 +130,3 @@ jobs:
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
-    - name: Goodbye!
-      run: |
-        npm install cowsay
-        npx cowsay quarkus ?!? reverse proxy??!
-      working-directory: www
