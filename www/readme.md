@@ -24,5 +24,5 @@ the producers for our read only application state.
 
 See [model.ts](./src/model/model.ts) and [store.ts](./src/model/store.ts) in the project as an example.
 
-We do not use lit-html. Still you should install the lit-html Plugin to get the syntax highlighting for the html templates in your code editor.
+You should propably install an [extension](https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html) to get the syntax highlighting for the html templates in your code editor.
 

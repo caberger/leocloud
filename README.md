@@ -26,9 +26,9 @@ nginx is configured to be a reverse proxy for the Application Server, so that th
 
 The github runner needs access to your server. So you must specify the hostname or IP-Adress of the server, the username with sudo permission to log in and the private key used for that.
 The user must be able to sudo without password, see below. The runner also needs a token to push docker images to your repository.
-Of course we do not check in all that credentials in cleartext, but use [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for that purpose.
+Of course we do not check in all that credentials in cleartext, but use github secrets for that purpose.
 
-You must set the following Github secrets: 
+You must set the following [encrypted secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets): 
 | Name                    | Description     |
 | :---------------------- | :---------- |
 | [SSH_SERVER_PRIVATE_KEY](https://www.redhat.com/sysadmin/passwordless-ssh) | the private key that is allowed to log into the server  |
@@ -74,10 +74,14 @@ sudo systemctl restart docker-compose
 docker-compose logs -f
 ~~~
 
-# About the firewall
+## About the firewall
 
-Make sure that you open port 80 on your firewall. All traffic goes through this port. If you want to use https,
-you must [add a certificate](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx) to nginx, expose it on port 443 and open port 443 on your firewall instead of port 80.
+Make sure that you open port 80 on your firewall. All traffic goes through this port. 
+
+### using https
+If you want to use https,
+you must [add a certificate](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx) to nginx, expose it on port 443 and open port 443 on your firewall instead of port 80. In that case nginx terminates https and the application server does not 
+need a certificate, because all internal traffic is done with http.
 
 ## Cloud
 To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [this project](https://github.com/caberger/javafx-cdi-jpa)
