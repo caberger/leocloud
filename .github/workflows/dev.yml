@@ -126,6 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: install ssh key
       uses: caberger/install-ssh-key@v1.0
       with:
@@ -133,6 +134,10 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
+
+    - name: convert github repository name to lowercase
+      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
     - name: deploy to server  
       working-directory: distribution
       run: |
