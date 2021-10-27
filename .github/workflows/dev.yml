@@ -138,7 +138,7 @@ jobs:
       run: |
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp -r *.sh server/ server:~/dist/
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
+        scp docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
         echo "running installation on server..."
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
