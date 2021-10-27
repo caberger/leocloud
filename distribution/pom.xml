@@ -20,23 +20,23 @@
     <build>
         <plugins>
             <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-                <execution>
-                    <id>make-bundles</id>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                    <phase>package</phase>
-                    <configuration>
-                        <descriptors>
-                            <descriptor>assembly.xml</descriptor>
-                        </descriptors>
-                        <finalName>distribution</finalName>
-                        <appendAssemblyId>false</appendAssemblyId>                        
-                    </configuration>
-                </execution>
-            </executions>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-bundles</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>distribution</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>                        
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>  

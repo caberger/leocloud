@@ -125,6 +125,7 @@ jobs:
       - www
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: install ssh key
       uses: caberger/install-ssh-key@v1.0
       with:
