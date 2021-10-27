@@ -69,14 +69,15 @@ echo $ACCESS_TOKEN | docker login --username $GITHUB_USER --password-stdin
 
 docker image ls
 docker-compose pull
-systemctl start docker-compose
 
 if [[ $REBOOT -eq 0 ]]
 then
+    echo "starting docker-compose service"
+    systemctl start docker-compose
     echo "application started..."
 else
-    echo "You should reboot the system"
-#    nohup sudo shutdown -r 1 "reboot by install script due to package installation" </dev/null &>/dev/null &
+    echo "reboot..."
+    nohup sudo shutdown -r now "reboot by install script due to package installation"&
 fi
 popd
 exit
