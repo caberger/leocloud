@@ -38,6 +38,8 @@
                         <descriptors>
                             <descriptor>assembly.xml</descriptor>
                         </descriptors>
+                        <finalName>distribution</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>                        
                     </configuration>
                 </execution>
             </executions>

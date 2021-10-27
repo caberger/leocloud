@@ -27,7 +27,6 @@
   </dependencies>
   <modules>
     <module>appsrv</module>
-    <module>docker</module>
     <module>distribution</module>
   </modules>
   <build>

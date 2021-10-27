@@ -10,59 +10,26 @@
 
     <fileSets>
         <fileSet>
-            <directory>../docker</directory>
+            <directory>../appsrv/docker/</directory>
+            <outputDirectory>./docker/appsrv/</outputDirectory>
             <includes>
-                <include>docker-compose-production.yml</include>
-                <include>docker-compose.yml</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>../docker</directory>
-            <includes>
-                <include>build.sh</include>
-            </includes>
-            <fileMode>0755</fileMode>
-        </fileSet>
-        <fileSet>
-            <directory>../docker/appsrv</directory>
-            <includes>
-                <include>Dockerfile</include>
-                <include>Dockerfile.jvm</include>
-                <include>scripts/*</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>../docker/nginx</directory>
-            <includes>
-                <include>Dockerfile</include>
-                <include>default.conf</include>
-                <include>html/</include>
+                <include>**/*</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>../appsrv/target</directory>
-            <outputDirectory>../docker/appsrv/deployments</outputDirectory>
+            <outputDirectory>./docker/appsrv/deployments</outputDirectory>
             <includes>
                 <include>*-runner</include>
                 <include>leocloud-*.jar</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../www/target/</directory>
-            <outputDirectory>../docker/nginx/html</outputDirectory>
+            <directory>.</directory>
+            <outputDirectory>./docker/</outputDirectory>
             <includes>
-                <include>**/*</include>
-            </includes>
-            <excludes>
-                <exclude>**/*.map</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>./server</directory>
-            <outputDirectory>server</outputDirectory>
-            <includes>
-                <include>docker-compose.service</include>
-                <include>readme.md</include>
+                <include>docker-compose.yml</include>
+                <include>docker-compose-production.yml</include>
             </includes>
         </fileSet>
     </fileSets>

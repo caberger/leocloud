@@ -4,6 +4,9 @@
 name: Build Application (master)
 
 on:
+  push:
+    branches: [ develop ]
+
   workflow_dispatch:
     inputs:
       debug:
@@ -13,7 +16,7 @@ on:
        
 env:
   REGISTRY: ghcr.io
-  DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
+  DISTRIBUTION_FOLDER: target/distribution/docker
   GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 
 jobs:
@@ -56,16 +59,16 @@ jobs:
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
 
+    - name: build appsrv docker image
+      run: |
+        docker build appsrv --tag ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
     - name: Log in to the Container registry
       uses: docker/login-action@v1
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
-    - name: build appsrv docker image
-      run: |
-        docker build appsrv --tag ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
     - name: push appsrv docker image
       run: |
         docker push ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
@@ -93,12 +96,12 @@ jobs:
     - name: build web application
       run: npm run build
       working-directory: www
-    - name: Log in to the Container registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+
+    - name: deploy to distribution folder
+      run: |
+        chmod +x copy-www.sh
+        ./copy-www.sh
+      working-directory: distribution
 
     - name: build nginx docker image
       run: |
@@ -107,11 +110,17 @@ jobs:
         docker build nginx --tag ${{ env.REGISTRY }}/${{ github.repository }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
 
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
     - name: push nginx docker image
       run: |
         docker push ${{ env.REGISTRY }}/${{ github.repository }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
-  install:
+  deploy:
     needs: 
       - appsrv
       - www
