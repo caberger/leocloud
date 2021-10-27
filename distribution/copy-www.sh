@@ -12,4 +12,6 @@ pushd $BASE_DIR
 mkdir -p $DIST/html/
 cp -r ./www/docker/* $DIST
 cp -r ./www/target/* $DIST/html/
+ls -ld $DIST
+ls -ld $DIST/html
 popd

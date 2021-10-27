@@ -53,7 +53,7 @@ jobs:
         echo "GRAALVM_HOME=/opt/graalvm" >> $GITHUB_ENV
       working-directory: /opt
 
-    - name: build supersonic quarkus application
+    - name: build supersonic native quarkus application
       run: |
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
@@ -132,11 +132,13 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
-    - name: install on server  
+    - name: deploy to server  
       working-directory: distribution
       run: |
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp -r *.sh server/ server:~/dist/
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
+        echo "running installation on server..."
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
+        echo "done $(date)"

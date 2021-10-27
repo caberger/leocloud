@@ -16,12 +16,6 @@
             <version>${global.version}</version>
             <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>${global.groupId}</groupId>
-            <artifactId>docker</artifactId>
-            <version>${global.version}</version>
-            <type>pom</type>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
