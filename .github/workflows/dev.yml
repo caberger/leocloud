@@ -5,7 +5,7 @@ name: Build Application (master)
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
     
   workflow_dispatch:
     inputs:
@@ -20,36 +20,15 @@ env:
   GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
-
     steps:
-    - name: convert github repository name to lowercase in order to get valid docker image identifiers
-      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+    - uses: actions/checkout@v2
 
-#   We install the ssh key on log into registry now to detect problems with secrets early (before build)
-    - name: install ssh key
-      uses: caberger/install-ssh-key@v1.0
-      with:
-        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-        user: ${{ secrets.SERVER_USER }}
-        server: ${{ secrets.SERVER }}
-        alias: server
-
-    - name: verify ssh key
-      run: ssh server ls -l
-
-    - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
-
-    - name: Setup tmate session (for debugging only)
-      uses: mxschmitt/action-tmate@v3
-      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
-
+  appsrv:
+    needs: checkout
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
@@ -65,25 +44,6 @@ jobs:
         key: ${{ runner.os }}-build-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-build-m2-
-
-    - name: cache node_modules (html)
-      uses: actions/cache@v2
-      with:
-        path: './www//node_modules'
-        key: ${{ runner.os }}-www-node-modules-v0.0.1-${{ hashFiles('./www/package.json') }}
-
-    - name: install nodejs
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - name: install node dependencies
-      run: |
-        npm install
-      working-directory: www
-
-    - name: build web application
-      run: npm run build
-      working-directory: www
 
     - name: install graal vm
       run: |
@@ -103,6 +63,39 @@ jobs:
       run: |
         echo "graal home is $GRAALVM_HOME"
         mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
+  www:
+    needs: checkout
+    runs-on: ubuntu-latest
+    steps:
+    - name: cache node_modules (www)
+      uses: actions/cache@v2
+      with:
+        path: './www//node_modules'
+        key: ${{ runner.os }}-www-node-modules-v0.0.1-${{ hashFiles('./www/package.json') }}
+    - name: install nodejs
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: install node dependencies
+      run: |
+        npm install
+      working-directory: www
+
+    - name: build web application
+      run: npm run build
+      working-directory: www
+  docker-images:
+    needs: 
+    - appsrv
+    - www
+    runs-on: ubuntu-latest
+    steps:
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
 
     - name: build docker images
       run: |
@@ -113,7 +106,17 @@ jobs:
     - name: push docker images
       run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
-
+  install:
+    needs: docker-images
+    runs-on: ubuntu-latest
+    steps:
+    - name: install ssh key
+      uses: caberger/install-ssh-key@v1.0
+      with:
+        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+        user: ${{ secrets.SERVER_USER }}
+        server: ${{ secrets.SERVER }}
+        alias: server
     - name: install on server  
       working-directory: distribution
       run: |
@@ -122,11 +125,8 @@ jobs:
         scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
-
     - name: Goodbye!
       run: |
         npm install cowsay
         npx cowsay quarkus ?!? reverse proxy??!
       working-directory: www
-
-
