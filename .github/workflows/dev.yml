@@ -4,9 +4,6 @@
 name: Build Application (master)
 
 on:
-  push:
-    branches: [ develop ]
-    
   workflow_dispatch:
     inputs:
       debug:
