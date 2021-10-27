@@ -1,56 +1,28 @@
-name: build and deploy (master)
+# This workflow will build a Java project with Maven
+# For more information see: https://aberger.at/blog/2021/05/29/cloud-startproject.html
+
+name: build and deploy
 
 on:
   push:
     branches: [ master ]
-    
+
   workflow_dispatch:
     inputs:
       debug:
         description: enable tmate console debugging     
         required: false
         default: "disabled"
-      build:
-        description: "'native' will build a quarkus native image via GraalVM"
-        required: false
-        default: "jvm"
        
 env:
   REGISTRY: ghcr.io
-  DISTRIBUTION_FOLDER: target/distribution-0.0.1-dist/docker
+  DISTRIBUTION_FOLDER: target/distribution/docker
   GRAAL_VM_URL: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 
 jobs:
-  build:
+  appsrv:
     runs-on: ubuntu-latest
-
     steps:
-    - name: convert github repository name to lowercase in order to get valid docker image identifiers
-      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
-#   We install the ssh key on log into registry now to detect problems with secrets early (before build)
-    - name: install ssh key
-      uses: caberger/install-ssh-key@v1.0
-      with:
-        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
-        user: ${{ secrets.SERVER_USER }}
-        server: ${{ secrets.SERVER }}
-        alias: server
-
-    - name: verify ssh key
-      run: ssh server ls -l
-
-    - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
-
-    - name: Setup tmate session (for debugging only)
-      uses: mxschmitt/action-tmate@v3
-      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}
-
     - uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
@@ -67,7 +39,45 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-build-m2-
 
-    - name: cache node_modules (html)
+    - name: install graal vm
+      run: |
+        pwd
+        ls -ld .
+        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
+        ls -l
+        tar -xzf graalvm.tgz
+        mv graalvm-* graalvm
+        export GRAALVM_HOME=/opt/graalvm
+        export PATH=$GRAALVM_HOME/bin:$PATH
+        gu install native-image
+        echo "GRAALVM_HOME=/opt/graalvm" >> $GITHUB_ENV
+      working-directory: /opt
+
+    - name: build supersonic native quarkus application
+      run: |
+        echo "graal home is $GRAALVM_HOME"
+        mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
+
+    - name: build appsrv docker image
+      run: |
+        docker build appsrv --tag ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+    - name: push appsrv docker image
+      run: |
+        docker push ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+
+  www:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: cache node_modules (www)
       uses: actions/cache@v2
       with:
         path: './www//node_modules'
@@ -86,49 +96,55 @@ jobs:
       run: npm run build
       working-directory: www
 
-    - name: install graal vm
+    - name: deploy to distribution folder
+      run: |
+        chmod +x copy-www.sh
+        ./copy-www.sh
+      working-directory: distribution
+
+    - name: build nginx docker image
       run: |
         pwd
-        ls -ld .
-        curl --location --output graalvm.tgz ${{ env.GRAAL_VM_URL }}
         ls -l
-        tar -xzf graalvm.tgz
-        mv graalvm-* graalvm
-        export GRAALVM_HOME=/opt/graalvm
-        export PATH=$GRAALVM_HOME/bin:$PATH
-        gu install native-image
-        echo "GRAALVM_HOME=/opt/graalvm" >> $GITHUB_ENV
-      working-directory: /opt
+        docker build nginx --tag ${{ env.REGISTRY }}/${{ github.repository }}-nginx
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
 
-    - name: build supersonic quarkus application
-      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.native == 'enabled' }}
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+    - name: push nginx docker image
       run: |
-        echo "graal home is $GRAALVM_HOME"
-        mvn -Pnative -Dquarkus-profile=prod -Dbase.href="/" -B package
-
-    - name: build docker images
-      run: |
-        ./build.sh build ${{ env.REGISTRY }}/${{ github.repository }}
-        docker image ls
+        docker push ${{ env.REGISTRY }}/${{ github.repository }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+  deploy:
+    needs: 
+      - appsrv
+      - www
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
 
-    - name: push docker images
-      run: ./build.sh push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}    
+    - name: install ssh key
+      uses: caberger/install-ssh-key@v1.0
+      with:
+        ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+        user: ${{ secrets.SERVER_USER }}
+        server: ${{ secrets.SERVER }}
+        alias: server
 
-    - name: install on server  
+    - name: convert github repository name to lowercase
+      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+    - name: deploy to server  
       working-directory: distribution
       run: |
         ssh server "rm -rf ~/dist && mkdir -p ~/dist"
         scp -r *.sh server/ server:~/dist/
-        scp ${{ env.DISTRIBUTION_FOLDER }}/docker-compose-production.yml server:~/dist
+        scp docker-compose-production.yml server:~/dist
         ssh server "chmod +x ~/dist/*.sh"
+        echo "running installation on server..."
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
-
-    - name: Goodbye!
-      run: |
-        npm install cowsay
-        npx cowsay quarkus ?!? reverse proxy??!
-      working-directory: www
-
-
+        echo "done $(date)"
