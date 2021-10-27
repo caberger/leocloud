@@ -21,7 +21,6 @@ env:
 
 jobs:
   appsrv:
-    needs: www
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-java@v2
