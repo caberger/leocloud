@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: ascii doc
-      run: make
+      run: sed -e 's/\r$//' -i *.sh && chmod +x *.sh && ./build.sh
       working-directory: documentation/slides
   build:
     runs-on: ubuntu-latest
