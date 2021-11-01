@@ -1,3 +1,5 @@
+include::locale/attributes.adoc[]
+
 [role="paper container"]
 
 = LeoCloud
@@ -25,7 +27,7 @@
 * *Pod*: Ein Pod ist eine logische Verpackungseinheit für einen Container, um diesen auf einem Kubernetes - Cluster auszuführen. 
 * *Cluster*: Ein Kubernetes Cluster ist eine gewisse Anzahl von node - Machinen um Container - Anwendungen auszuführen.
 
-.a kubernetes cluster
+.Ein Kubernetes Cluster
 image::kubernetescluster.png[Kubernetes Cluster,float="center",align="center"]
 
 * *Controller*: Etwas, das den Ist- Zustand mit dem Soll-Zustand vergleicht und den Ist-Zustand ändert, bis er dem Soll-Zustand entspricht.
