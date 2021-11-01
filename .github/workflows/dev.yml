@@ -16,7 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: ascii doc
-      run: sed -e 's/\r$//' -i *.sh && chmod +x *.sh && ./build-doc.sh
+      run: |
+        pwd
+        ls -l
+        sed -e 's/\r$//' -i *.sh
+        chmod +x *.sh 
+        echo "running"
+        pwd
+        ls -l
+        docker version || echo "no docker installed"
+        ./build-doc.sh
       working-directory: documentation/slides
   build:
     runs-on: ubuntu-latest
