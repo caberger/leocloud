@@ -22,10 +22,12 @@ include::locale/attributes.adoc[]
 == Cloud Computing Grundbegriffe
 
 
-* *Container*: Ein Container ist ein Paket mit dem auszuführenden Programm und allen seinen Abhängigkeiten, wie z.B. die Laufzeitumgebung, System-Bibliotheken..., alles zusammengepackt in einer "Schachtel" -> Ergebnis von ```docker build```. 
+* *Container*: Ein Container ist ein Paket mit dem auszuführenden Programm und allen seinen Abhängigkeiten, wie z.B. die Laufzeitumgebung, System-Bibliotheken..., alles zusammengepackt in einer "Schachtel" -> Ergebnis von _docker build_. 
+* *Kubernetes*: Kubernetes (von griechisch κυβερνήτης, "Steuermann") ist ein Open-Source-System zur Automatisierung der Bereitstellung, Skalierung und Verwaltung von Container-Anwendungen.
 * *Node*: ein Computer
-* *Pod*: Ein Pod ist eine logische Verpackungseinheit für einen Container, um diesen auf einem Kubernetes - Cluster auszuführen. 
-* *Cluster*: Ein Kubernetes Cluster ist eine gewisse Anzahl von node - Machinen um Container - Anwendungen auszuführen.
+* *Cluster*: Ein Kubernetes Cluster ist eine gewisse Anzahl von Nodes um Container - Anwendungen auszuführen.
+
+* *Pod*: Ein Pod ist eine logische Verpackungseinheit für einen Container, um diesen auf einem Cluster auszuführen. 
 
 .Ein Kubernetes Cluster
 image::kubernetescluster.png[Kubernetes Cluster,float="center",align="center"]
@@ -36,12 +38,9 @@ image::kubernetescluster.png[Kubernetes Cluster,float="center",align="center"]
 * *Service*: Ein abstrakter Weg um eine Applikation, die auf einer Menge von Pods läuft, nach außen verfügbar zu machen. 
 * *Ingress*: ein Controller, der ständig nachsieht, ob es aktuell neue Services gibt, die - falls ja - auf einem öffentlichen Port in das Internet freigegeben werden.
 
-
 .Ingress
 image::ingress.png[Ingress,float="center",align="center"]
 
-
-'''
 
 == Workshop
 
@@ -68,3 +67,7 @@ Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
 * https://docs.microsoft.com/en-us/windows/wsl/install[WSL2]
 * https://docs.microsoft.com/en-us/windows/terminal/install[Windows Terminal]
 * https://ubuntu.com/wsl[Ubuntu unter WSL2]
+
+
+.Kubernetes (von griechisch κυβερνήτης, "Steuermann")
+image::helmsman.jpg[Kubernetes ,640,480,float="center",align="center"]
