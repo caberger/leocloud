@@ -16,9 +16,6 @@
 :toc:
 
 
-
-
-
 [%notitle]
 == Cloud Computing Grundbegriffe
 
@@ -48,12 +45,12 @@ image::ingress.png[Ingress,float="center",align="center"]
 
 Die LeoCloud zum Anfassen und Mitarbeiten.
 
-=== Die kanonische Anwendung
+=== die kanonische Anwendung
 :hide-uri-scheme:
 
 Die Anwendung https://github.com/caberger/leocloud[caberger/leocloud] ist ein Beispiel dafür, wie wir aus unserem Source Code automatisch alle benötigten Container erzeugen und diese anschliessend in die Cloud installieren. 
 
-=== Benötigte Software
+=== denötigte Software
 
 Um mit diesem Beispiel zu arbeiten, benötigen Sie folgende kostenlose Anwendungen:
 
