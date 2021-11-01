@@ -115,8 +115,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: asciidoctor
       run: |
-        docker run --rm -v $(pwd):/documents/ --user $UID:$GID asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -a docinfo=shared -a linkcss -a copycss -D html index.adoc
-        cp -r css/ images/ html/
+        sed -e 's/\r$//' -i *.sh
+        chmod +x *.sh
+        ./build-doc.sh
       working-directory: documentation/slides
 
     - name: Deploy to Github Pages
