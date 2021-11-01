@@ -1,0 +1,30 @@
+
+@import "./paper.css";
+
+body {
+    background-image: url("cloud_light.jpg");
+}
+.container {
+    max-width: 1400px;
+}
+ul {
+    list-style-type: "-";
+    list-style-position: outside;
+}
+ul li::marker {
+    font-size: 1.2em;
+    margin: 8px;
+}
+ul li::before {
+    content: none;
+}
+ul li p,a {
+    position: relative;
+    left: 14px;
+}
+
+img {
+    display: inline-block;
+    vertical-align: middle;
+}
+

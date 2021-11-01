@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="author" content="T. Stütz, C. Aberger">
+<title>LeoCloud</title>
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article paper container">
+<div id="header">
+<h1>LeoCloud</h1>
+<div class="details">
+<span id="author" class="author">T. Stütz, C. Aberger</span><br>
+<span id="email" class="email"><a href="mailto:c.aberger@htl-leonding.ac.at">c.aberger@htl-leonding.ac.at</a></span><br>
+<span id="revnumber">version 1.0,</span>
+<span id="revdate">2021-11-01</span>
+<br><span id="revremark">SCHILF @ HTL Leonding</span>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_cloud_computing_grundbegriffe">Cloud Computing Grundbegriffe</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_cloud_computing_grundbegriffe">Cloud Computing Grundbegriffe</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Container</strong>: Ein Container ist ein Paket mit dem auszuführenden Programm und allen seinen Abhängigkeiten, wie z.B. die Laufzeitumgebung, System-Bibliotheken&#8230;&#8203;, alles zusammengepackt in einer "Schachtel" &#8594; Ergebnis von <code><code>docker build</code></code>.</p>
+</li>
+<li>
+<p><strong>Node</strong>: ein Computer</p>
+</li>
+<li>
+<p><strong>Pod</strong>: Ein Pod ist eine logische Verpackungseinheit für einen Container, um diesen auf einem Kubernetes - Cluster auszuführen.</p>
+</li>
+<li>
+<p><strong>Cluster</strong>: Ein Kubernetes Cluster ist eine gewisse Anzahl von node - Machinen um Container - Anwendungen auszuführen.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock center text-center">
+<div class="content">
+<img src="images/kubernetescluster.png" alt="Kubernetes Cluster">
+</div>
+<div class="title">Figure 1. a kubernetes cluster</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Controller</strong>: Etwas, das den Ist- Zustand mit dem Soll-Zustand vergleicht und den Ist-Zustand ändert, bis er dem Soll-Zustand entspricht.</p>
+</li>
+<li>
+<p><strong>ReplicaSet</strong>: versucht immer eine stabile Menge von Pods am Laufen zu halten.</p>
+</li>
+<li>
+<p><strong>Deployment</strong>: stellt deklarative Updates für Pods und Replicasets zur Verfügung. Der <em>Controller</em> ändert den Status der Deployments, so dass dieser dem vorgegebenen Zustand des Deployments entspricht.</p>
+</li>
+<li>
+<p><strong>Service</strong>: Ein abstrakter Weg um eine Applikation, die auf einer Menge von Pods läuft, nach außen verfügbar zu machen.</p>
+</li>
+<li>
+<p><strong>Ingress</strong>: ein Controller, der ständig nachsieht, ob es aktuell neue Services gibt, die - falls ja - auf einem öffentlichen Port in das Internet freigegeben werden.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock center text-center">
+<div class="content">
+<img src="images/ingress.png" alt="Ingress">
+</div>
+<div class="title">Figure 2. Ingress</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0<br>
+Last updated 2021-11-01 13:51:40 UTC
+</div>
+</div>
+</body>
+</html>

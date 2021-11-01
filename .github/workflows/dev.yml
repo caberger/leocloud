@@ -12,6 +12,12 @@ env:
   DISTRIBUTION_FOLDER: target/distribution/docker
 
 jobs:
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+    - name: ascii doc
+      run: make
+      working-directory: documentation/slides
   build:
     runs-on: ubuntu-latest
     steps:
