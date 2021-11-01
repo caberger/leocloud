@@ -21,12 +21,13 @@ jobs:
         sed -e 's/\r$//' -i *.sh
         chmod +x *.sh
         ./build-doc.sh
+        ls -l html
       working-directory: documentation/slides
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./documentation/slides
+        publish_dir: ./documentation/slides/html
   build:
     runs-on: ubuntu-latest
     steps:
