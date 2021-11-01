@@ -12,22 +12,6 @@ env:
   DISTRIBUTION_FOLDER: target/distribution/docker
 
 jobs:
-  documentation:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: ascii doc
-      run: |
-        sed -e 's/\r$//' -i *.sh
-        chmod +x *.sh
-        ./build-doc.sh
-        ls -l html
-      working-directory: documentation/slides
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./documentation/slides/html
   build:
     runs-on: ubuntu-latest
     steps:
@@ -125,6 +109,22 @@ jobs:
         echo "running installation on server..."
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
         echo "done $(date)"
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: ascii doc
+      run: |
+        docker run --rm -v $(pwd):/documents/ --user $UID:$GID asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -a docinfo=shared -a linkcss -a copycss -D html index.adoc
+        cp -r css/ images/ html/
+      working-directory: documentation/slides
+
+    - name: Deploy to Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./documentation/slides/html
+
   bye:
     needs:
       - documentation
