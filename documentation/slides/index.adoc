@@ -1,4 +1,5 @@
 [role="paper container"]
+
 = LeoCloud
 :stylesheet: css/styles.css
 :docinfodir: docinfo
@@ -10,13 +11,17 @@
 :revremark: SCHILF @ HTL Leonding
 :encoding: utf-8
 :lang: de
-:imagesdir: images
 :doctype: article
 :icons: font
 :toc:
 
+
+
+
+
 [%notitle]
 == Cloud Computing Grundbegriffe
+
 
 * *Container*: Ein Container ist ein Paket mit dem auszuführenden Programm und allen seinen Abhängigkeiten, wie z.B. die Laufzeitumgebung, System-Bibliotheken..., alles zusammengepackt in einer "Schachtel" -> Ergebnis von ```docker build```. 
 * *Node*: ein Computer
@@ -36,4 +41,26 @@ image::kubernetescluster.png[Kubernetes Cluster,float="center",align="center"]
 .Ingress
 image::ingress.png[Ingress,float="center",align="center"]
 
----
+
+'''
+
+== Workshop
+
+Die LeoCloud zum Anfassen und Mitarbeiten.
+
+=== Die kanonische Anwendung
+:hide-uri-scheme:
+
+Die Anwendung https://github.com/caberger/leocloud[caberger/leocloud] ist ein Beispiel dafür, wie wir aus unserem Source Code automatisch alle benötigten Container erzeugen und diese anschliessend in die Cloud installieren. 
+
+=== Benötigte Software
+
+Um mit diesem Beispiel zu arbeiten, benötigen Sie folgende kostenlose Anwendungen:
+
+* https://code.visualstudio.com/[Visual Studio Code]
+* https://docs.microsoft.com/en-us/windows/wsl/install[WSL2]
+* https://docs.microsoft.com/en-us/windows/terminal/install[Windows Terminal]
+* https://ubuntu.com/wsl[Ubuntu unter WSL2]
+* https://github.com/[Github Konto]
+* https://cloud.htl-leonding.ac.at/[LeoCloud Konto]
+* https://www.oracle.com/cloud/sign-in.html?intcmp=OcomFreeTier[Oracle Cloud Konto (optional)]

@@ -18,7 +18,11 @@ ul li::marker {
 ul li::before {
     content: none;
 }
-ul li p,a {
+ul li p {
+    position: relative;
+    left: 14px;
+}
+ul li a {
     position: relative;
     left: 14px;
 }
@@ -27,8 +31,8 @@ img {
     display: inline-block;
     vertical-align: middle;
 }
-.toctitle {
+#toctitle {
     font-size: 3rem;
-
+    margin: 2rem 0;
 }
 
