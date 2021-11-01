@@ -118,9 +118,24 @@ jobs:
     - name: push nginx docker image
       run: |
         docker push ${{ env.REGISTRY }}/${{ github.repository }}-nginx
-      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
+      working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: asciidoctor
+      run: |
+        docker run --rm -v $(pwd):/documents/ --user $UID:$GID asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -a docinfo=shared -a linkcss -a copycss -D html index.adoc
+        cp -r css/ images/ html/
+      working-directory: documentation/slides
+
+    - name: Deploy to Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./documentation/slides/html
   deploy:
-    needs: 
+    needs:
       - appsrv
       - www
     runs-on: ubuntu-latest
