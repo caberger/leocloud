@@ -50,14 +50,19 @@ Die LeoCloud zum Anfassen und Mitarbeiten.
 
 Die Anwendung https://github.com/caberger/leocloud[caberger/leocloud] ist ein Beispiel dafür, wie wir aus unserem Source Code automatisch alle benötigten Container erzeugen und diese anschliessend in die Cloud installieren. 
 
-=== denötigte Software
+=== benötigte Software
 
-Um mit diesem Beispiel zu arbeiten, benötigen Sie folgende kostenlose Anwendungen:
+Um mit diesem Beispiel zu arbeiten, benötigen wir für unser Betriebssystem folgende kostenlose Anwendungen:
+
 
 * https://code.visualstudio.com/[Visual Studio Code]
-* https://docs.microsoft.com/en-us/windows/wsl/install[WSL2]
-* https://docs.microsoft.com/en-us/windows/terminal/install[Windows Terminal]
-* https://ubuntu.com/wsl[Ubuntu unter WSL2]
 * https://github.com/[Github Konto]
 * https://cloud.htl-leonding.ac.at/[LeoCloud Konto]
 * https://www.oracle.com/cloud/sign-in.html?intcmp=OcomFreeTier[Oracle Cloud Konto (optional)]
+
+
+Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
+
+* https://docs.microsoft.com/en-us/windows/wsl/install[WSL2]
+* https://docs.microsoft.com/en-us/windows/terminal/install[Windows Terminal]
+* https://ubuntu.com/wsl[Ubuntu unter WSL2]
