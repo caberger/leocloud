@@ -12,7 +12,7 @@ env:
   DISTRIBUTION_FOLDER: target/distribution/docker
 
 jobs:
-  doc:
+  documentation:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -121,3 +121,11 @@ jobs:
         echo "running installation on server..."
         ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }} ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }} ${{ secrets.SERVER_USER }}"
         echo "done $(date)"
+  bye:
+    needs:
+      - documentation
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "done"
+     
