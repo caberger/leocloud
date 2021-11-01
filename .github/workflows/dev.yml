@@ -34,8 +34,8 @@ jobs:
     - name: cache node_modules (www)
       uses: actions/cache@v2
       with:
-        path: './www//node_modules'
-        key: ${{ runner.os }}-www-node-modules-v0.0.1-${{ hashFiles('./www/package.json') }}
+        path: './www/node_modules'
+        key: ${{ runner.os }}-www-node-modules-v0.0.2-${{ hashFiles('./www/package.json') }}
 
     - name: build quarkus application
       run: |
