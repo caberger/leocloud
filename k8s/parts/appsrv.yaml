@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appsrv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appsrv
+  template:
+    metadata:
+      labels:
+        app: appsrv
+    spec:
+      containers:
+        - name: appsrv
+          image: ghcr.io/caberger/leocloud-appsrv:latest
+          ports:
+            - containerPort: 8080
+          resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "250m"
+                limits:
+                  memory: "128Mi"
+                  cpu: "500m"
+      initContainers:
+        - name: wait
+          image: mysql:8
+          command: ["sh", "-c", "/usr/local/bin/wait.sh"]
+          volumeMounts:
+            - name: init-script
+              mountPath: /usr/local/bin
+              readOnly: true
+          env:
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: username
+            - name: DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: database
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+      volumes:
+        - name: init-script
+          configMap:
+            name: mysql-setup
+            items:
+              - key: wait.sh
+                path: wait.sh
+            defaultMode: 0744
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appsrv
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: appsrv
+  selector:
+    app: appsrv
