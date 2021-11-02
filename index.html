@@ -17,17 +17,18 @@
 <span id="author" class="author">T. Stütz, C. Aberger</span><br>
 <span id="email" class="email"><a href="mailto:c.aberger@htl-leonding.ac.at">c.aberger@htl-leonding.ac.at</a></span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2021-11-01</span>
+<span id="revdate">2021-11-02</span>
 <br><span id="revremark">SCHILF @ HTL Leonding</span>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Inhaltsverzeichnis</div>
 <ul class="sectlevel1">
 <li><a href="#_cloud_computing_grundbegriffe">Cloud Computing Grundbegriffe</a></li>
 <li><a href="#_workshop">Workshop</a>
 <ul class="sectlevel2">
 <li><a href="#_die_kanonische_anwendung">die kanonische Anwendung</a></li>
 <li><a href="#_benötigte_software">benötigte Software</a></li>
+<li><a href="#_kubectl">kubectl</a></li>
 </ul>
 </li>
 </ul>
@@ -60,7 +61,7 @@
 <div class="content">
 <img src="images/kubernetescluster.png" alt="Kubernetes Cluster">
 </div>
-<div class="title">Figure 1. Ein Kubernetes Cluster</div>
+<div class="title">Abbildung 1. Ein Kubernetes Cluster</div>
 </div>
 <div class="ulist">
 <ul>
@@ -85,7 +86,7 @@
 <div class="content">
 <img src="images/ingress.png" alt="Ingress">
 </div>
-<div class="title">Figure 2. Ingress</div>
+<div class="title">Abbildung 2. Ingress</div>
 </div>
 </div>
 </div>
@@ -142,7 +143,20 @@
 <div class="content">
 <img src="images/helmsman.jpg" alt="Kubernetes" width="640" height="480">
 </div>
-<div class="title">Figure 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
+<div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kubectl">kubectl</h3>
+<div class="paragraph">
+<p>Beim Debugging von Kubernetes hilft das <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl Cheat Sheet</a>.
+z.B.: Ein init-script endet nicht, dann kann man sich die logs des init-scripts ansehen mit:</p>
+</div>
+<div class="listingblock">
+<div class="title">kubectl log command</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl logs &lt;podname&gt; -c &lt;init-container-name&gt;</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -151,7 +165,7 @@
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2021-11-01 19:19:55 UTC
+Zuletzt aktualisiert 2021-11-02 11:26:18 UTC
 </div>
 </div>
 </body>
