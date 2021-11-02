@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --env debug=true --env base=/ ",
-    "build": "webpack --env debug=false"
+    "build": "webpack --env debug=false --env base=/",
+    "build.cloud": "webpack --env debug=false --env base=$npm_config_base"
   },
   "author": "caberger",
   "license": "ISC",
