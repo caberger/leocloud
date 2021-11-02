@@ -51,7 +51,7 @@ jobs:
       working-directory: www
 
     - name: build web application
-      run: npm run build --base="/c.aberger/"
+      run: npm run build --base="/"
       working-directory: www
 
     - name: deploy to distribution folder

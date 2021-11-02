@@ -4,7 +4,12 @@
 # then the same docker image can be deployed to multiple sub-paths of the same hostname
 
 HTML=/usr/share/nginx/html
-echo "fix the baseUrl of all .html files to $BASE_HREF"
-echo find $HTML -type f -name "*.html" -print -exec sed -e -i "s/<base href=\(.*\)>\s*$/<base href=\"\\/$BASE_HREF\\/\">/g" {} \;
-find $HTML -type f -name "*.html" -print -exec sed -e -i "s/<base href=\(.*\)>\s*$/<base href=\"\\/$BASE_HREF\\/\">/g" {} \;
+
+if [[ "$BASE_HREF." == "." ]]
+then
+    echo "no BASE_HREF environment variable set, keep <base href...> as is is"
+else
+    echo "BASE_HREF=$BASE_HREF patch the head to <base href=\"$BASE_HREF\">"
+    find $HTML -type f -name "*.html" -print -exec sed -e "s/<base href=\"/\">/<base href=\"\\/$BASE_HREF\\/\">/" {} \;
+fi
 

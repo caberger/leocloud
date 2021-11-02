@@ -31,8 +31,6 @@ services:
       - mysql
   nginx:
     image: leo-nginx
-    environment:
-      BASE_HREF: "/"    
     deploy:
       restart_policy:
         condition: on-failure

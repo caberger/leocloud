@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <base href="<%= options.baseHref %>">
+    <base href="/">
+    <!--<base href="<%= options.baseHref %>"/>-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -31,11 +32,13 @@
             </div>
             <h3>Demo Application</h3>
             <div><a href="./app.html" target="_blank">The Demo Table</a> is implemented using typescript via webpack, directly served by nginx and fetching the data with
-                <a href="https://medium.com/@sagar.mane006/understanding-rest-representational-state-transfer-85256b9424aa" target="_blank">REST</a> from the application server.</div>
+                <a href="https://medium.com/@sagar.mane006/understanding-rest-representational-state-transfer-85256b9424aa" target="_blank">REST</a> from the application server.
+                An example for server-side rendered HTML using
+                <a href="https://quarkus.io/guides/qute" target="_blank">Qute</a> can be found <a href="./api/app/persons">here</a>
+            </div>
             <p>
-                You can browse the REST api <a href="./q/swagger-ui/">here</a> or download its <a href="./q/openapi/" download="openapi.yml">OpenAPI specification</a>. You can also check the <a href="./health">health of the server</a>.
-                The API is served by quarkus through the nginx reverse proxy for all requests starting with /api/. An example for server-side rendered HTML using
-                <a href="https://quarkus.io/guides/qute" target="_blank">Qute</a> can be found <a href="./api/app/persons">here</a>.
+                When this application is deployed on a development root server, you can browse the <a href="./q/swagger-ui/">REST api</a> and download its <a href="./q/openapi/" download="openapi.yml">OpenAPI specification</a>. You can also check the <a href="./health">health of the server</a>.
+                The API is served by quarkus through the nginx reverse proxy for all requests starting with /api/. .
             </p>
             <h4>Data in the demo database</h4>
             <ul>
