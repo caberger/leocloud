@@ -19,7 +19,7 @@ spec:
             - containerPort: 80
           env:
             - name: BASE_URL
-              value: c.aberger
+              value: "c.aberger"
           resources:
                 requests:
                   memory: "64Mi"

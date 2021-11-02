@@ -32,7 +32,7 @@ services:
   nginx:
     build: nginx
     environment:
-      BASE_URL: abs
+      BASE_HREF: "/"
     deploy:
       restart_policy:
         condition: on-failure
