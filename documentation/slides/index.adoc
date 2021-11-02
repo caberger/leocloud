@@ -70,12 +70,12 @@ Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
 
 
 .Kubernetes (von griechisch κυβερνήτης, "Steuermann")
-image::helmsman.jpg[Kubernetes ,640,480,float="center",align="center"]
+image::helmsman.jpg[Kubernetes ,320,,float="center",align="center"]
 
 === kubectl
 
 Beim Debugging von Kubernetes hilft das https://kubernetes.io/docs/reference/kubectl/cheatsheet/[Kubectl Cheat Sheet].
-z.B.: Ein init-script endet nicht, dann kann man sich die logs des init-scripts ansehen mit:
+Beispiel: die Logs des init-scripts eines Pods ansehen mit:
 
 .kubectl log command
 [source,bash]

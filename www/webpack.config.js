@@ -14,7 +14,7 @@ const options = env => {
         ENV: isDebug ? 'development' : 'production',
         OUTPUT_PATH: isDebug ? resolve(__dirname, ".") : resolve(__dirname, "target"),
         publicPath: isDebug ? "auto" : ".",
-        baseHref: env.base
+        baseHref: env.base ? env.base : "/"
     }
 }
 const environment = opts => ({
