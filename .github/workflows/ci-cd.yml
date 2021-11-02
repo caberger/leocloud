@@ -93,7 +93,7 @@ jobs:
       working-directory: www
 
     - name: build web application
-      run: npm run build
+      run: npm run build --base="/"
       working-directory: www
 
     - name: deploy to distribution folder
