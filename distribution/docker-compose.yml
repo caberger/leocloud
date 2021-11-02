@@ -3,7 +3,6 @@ version: '3.3'
 services:
   mysql:
     image: mysql:8
-    restart: always
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'user'
@@ -32,6 +31,8 @@ services:
       - mysql
   nginx:
     build: nginx
+    environment:
+      BASE_URL: abs
     deploy:
       restart_policy:
         condition: on-failure

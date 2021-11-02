@@ -18,12 +18,9 @@ spec:
           ports:
             - containerPort: 8080
           resources:
-                requests:
-                  memory: "64Mi"
-                  cpu: "250m"
-                limits:
-                  memory: "128Mi"
-                  cpu: "500m"
+            limits:
+              memory: 1024Mi
+              cpu: 1024m
       initContainers:
         - name: wait
           image: mysql:8
