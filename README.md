@@ -84,4 +84,4 @@ you must [add a certificate](https://certbot.eff.org/lets-encrypt/ubuntufocal-ng
 need a certificate, because all internal traffic is done with http.
 
 ## Cloud
-To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [this project](https://github.com/caberger/javafx-cdi-jpa)
+To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [this readme](./k8s/readme.md)
