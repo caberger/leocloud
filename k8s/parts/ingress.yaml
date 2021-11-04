@@ -16,22 +16,24 @@ spec:
                 name: nginx
                 port:
                   number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: appsrv-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
-spec:
-  rules:
-    - host: student.cloud.htl-leonding.ac.at
-      http:
-        paths:
-          - path: /c.aberger/api/(.*)$
-            pathType: Prefix
-            backend:
-              service:
-                name: appsrv
-                port:
-                  number: 8080
+
+## backend ingress is unused, forwarded my nginx in default.conf
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: appsrv-ingress
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
+#spec:
+#  rules:
+#    - host: student.cloud.htl-leonding.ac.at
+#      http:
+#        paths:
+#          - path: /c.aberger/api/(.*)$
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: appsrv
+#                port:
+#                  number: 8080
