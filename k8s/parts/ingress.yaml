@@ -9,7 +9,7 @@ spec:
     - host: student.cloud.htl-leonding.ac.at
       http:
         paths:
-          - path: /c.aberger(/|$)(.*)$
+          - path: /$EMAIL(/|$)(.*)$
             pathType: Prefix
             backend:
               service:
@@ -30,7 +30,7 @@ spec:
 #    - host: student.cloud.htl-leonding.ac.at
 #      http:
 #        paths:
-#          - path: /c.aberger/api/(.*)$
+#          - path: /${{ email }}/api/(.*)$
 #            pathType: Prefix
 #            backend:
 #              service:
