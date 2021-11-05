@@ -6,10 +6,10 @@ Before you can use this you must do the following:
 
 - Install your config file into your ~/.kube folder
 
-   Replace $GITHUB_ACCOUNT with your github account name and $EMAIL prefix of the email that you have used to register in the LeoCloud (only the part **before** the **@**). 
+   Replace $GITHUB_ACCOUNT with your github account name and $EMAIL with the prefix of the email that you have used to register in the LeoCloud (only the part **before** the **@**). 
 
-   There is a script create-deployment.sh that you can use to do this automatically. 
-   Let us suppose your github account is john-doe and your email is john.doe@example.com
+   There is a script [create-deployment.sh](./create-deployment.sh) that you can use to do this automatically. 
+   Let us suppose your github account is _john-doe_ and your email is _john.doe@example.com_
    Then you can run:
 ```bash
    cd k8s
@@ -25,7 +25,7 @@ After that you can run
 kubectl apply -f deployment.yaml
 ```
 
-When want to remove your deployment you execute the following:
+To remove your deployment from the cloud again you execute the following:
 ```bash
 kubectl delete -f deployment.yaml
 ```
