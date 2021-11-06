@@ -9,11 +9,10 @@ then
     echo "usage: $0 github.actor email"
     echo "where:"
     echo "   git.actor is your github user name"
-    echo "   email is the your email address used to register in the LeoCloud is your github user name"
+    echo "   email is the your email address used to register in the LeoCloud (only the part before the @)"
 fi
 
-
-PARTS=$(find ./parts -type f -name "*.yaml" -print|sort)
+PARTS=$(find ./parts -type f -name "*.yaml" -print | sort)
 OUTPUT=distribution.yaml
 echo "prepare $OUTPUT for github user $ACTOR with base url $EMAIL"
 
