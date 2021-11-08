@@ -28,6 +28,10 @@
 <ul class="sectlevel2">
 <li><a href="#_die_kanonische_anwendung">die kanonische Anwendung</a></li>
 <li><a href="#_benötigte_software">benötigte Software</a></li>
+</ul>
+</li>
+<li><a href="#_kubernetes">Kubernetes</a>
+<ul class="sectlevel2">
 <li><a href="#_kubectl">kubectl</a></li>
 </ul>
 </li>
@@ -139,12 +143,29 @@
 </li>
 </ul>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kubernetes">Kubernetes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann finden sie hier in der Dokumentation Ihre [deployment.yaml](./download/deployment.yaml) Datei.</p>
+</div>
+<div class="paragraph">
+<p>Diese können Sie dann herunterladen und in die Cloud einspielen mit:
+.Deployment in die Cloud</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl apply -f deployment.yaml</code></pre>
+</div>
+</div>
 <div class="imageblock center text-center">
 <div class="content">
 <img src="images/helmsman.jpg" alt="Kubernetes" width="320">
 </div>
 <div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_kubectl">kubectl</h3>
@@ -165,7 +186,7 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Zuletzt aktualisiert 2021-11-08 15:28:02 UTC
+Zuletzt aktualisiert 2021-11-08 16:03:19 UTC
 </div>
 </div>
 </body>
