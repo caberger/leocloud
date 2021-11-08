@@ -17,7 +17,7 @@ spec:
                 port:
                   number: 80
 
-## backend ingress is unused, forwarded my nginx in default.conf
+## backend ingress is unused, forwarded by nginx in default.conf
 #---
 #apiVersion: networking.k8s.io/v1
 #kind: Ingress
@@ -30,7 +30,7 @@ spec:
 #    - host: student.cloud.htl-leonding.ac.at
 #      http:
 #        paths:
-#          - path: /${{ email }}/api/(.*)$
+#          - path: /${{ $EMAIL }}/api/(.*)$
 #            pathType: Prefix
 #            backend:
 #              service:

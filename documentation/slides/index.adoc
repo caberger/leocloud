@@ -68,6 +68,16 @@ Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
 * https://docs.microsoft.com/en-us/windows/terminal/install[Windows Terminal]
 * https://ubuntu.com/wsl[Ubuntu unter WSL2]
 
+== Kubernetes
+
+Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann finden sie hier in der Dokumentation Ihre [deployment.yaml](./download/deployment.yaml) Datei.
+
+Diese können Sie dann herunterladen und in die Cloud einspielen mit:
+.Deployment in die Cloud
+[source,bash]
+----
+ kubectl apply -f deployment.yaml
+----
 
 .Kubernetes (von griechisch κυβερνήτης, "Steuermann")
 image::helmsman.jpg[Kubernetes ,320,,float="center",align="center"]
@@ -76,6 +86,9 @@ image::helmsman.jpg[Kubernetes ,320,,float="center",align="center"]
 
 Beim Debugging von Kubernetes hilft das https://kubernetes.io/docs/reference/kubectl/cheatsheet/[Kubectl Cheat Sheet].
 Beispiel: die Logs des init-scripts eines Pods ansehen mit:
+
+
+
 
 .kubectl log command
 [source,bash]
