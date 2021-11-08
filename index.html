@@ -35,6 +35,7 @@
 <li><a href="#_kubectl">kubectl</a></li>
 </ul>
 </li>
+<li><a href="#_kubernetes_deyployment_file">Anhang A: Kubernetes Deyployment File</a></li>
 </ul>
 </div>
 </div>
@@ -150,14 +151,38 @@
 <h2 id="_kubernetes">Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:
-.Deployment in die Cloud</p>
+<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann wird ein Deployment File erzeugt (siehe Anhang).
+Diesen können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen, um Ihre Anwendung zu installieren.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl apply -f deployment.yaml</code></pre>
 </div>
 </div>
+<div class="imageblock center text-center">
+<div class="content">
+<img src="images/helmsman.jpg" alt="Kubernetes" width="320">
+</div>
+<div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
+</div>
+<div class="sect2">
+<h3 id="_kubectl">kubectl</h3>
+<div class="paragraph">
+<p>Beim Debugging von Kubernetes hilft das <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl Cheat Sheet</a>.
+Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
+</div>
+<div class="listingblock">
+<div class="title">kubectl log command</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl logs &lt;podname&gt; -c &lt;init-container-name&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kubernetes_deyployment_file">Anhang A: Kubernetes Deyployment File</h2>
+<div class="sectionbody">
 <div class="listingblock">
 <div class="title">deployment.yaml</div>
 <div class="content">
@@ -241,7 +266,7 @@ spec:
     - host: student.cloud.htl-leonding.ac.at
       http:
         paths:
-          - path: /john.doe(/|$)(.*)$
+          - path: /c.aberger(/|$)(.*)$
             pathType: Prefix
             backend:
               service:
@@ -262,7 +287,7 @@ spec:
 #    - host: student.cloud.htl-leonding.ac.at
 #      http:
 #        paths:
-#          - path: /${{ john.doe }}/api/(.*)$
+#          - path: /${{ c.aberger }}/api/(.*)$
 #            pathType: Prefix
 #            backend:
 #              service:
@@ -431,32 +456,13 @@ spec:
     app: nginx</code></pre>
 </div>
 </div>
-<div class="imageblock center text-center">
-<div class="content">
-<img src="images/helmsman.jpg" alt="Kubernetes" width="320">
-</div>
-<div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
-</div>
-<div class="sect2">
-<h3 id="_kubectl">kubectl</h3>
-<div class="paragraph">
-<p>Beim Debugging von Kubernetes hilft das <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl Cheat Sheet</a>.
-Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
-</div>
-<div class="listingblock">
-<div class="title">kubectl log command</div>
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl logs &lt;podname&gt; -c &lt;init-container-name&gt;</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Zuletzt aktualisiert 2021-11-08 17:20:05 UTC
+Zuletzt aktualisiert 2021-11-08 17:33:39 UTC
 </div>
 </div>
 </body>
