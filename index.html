@@ -150,15 +150,18 @@
 <h2 id="_kubernetes">Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann finden sie hier in der Dokumentation Ihre [deployment.yaml](./download/deployment.yaml) Datei.</p>
-</div>
-<div class="paragraph">
-<p>Diese können Sie dann herunterladen und in die Cloud einspielen mit:
+<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:
 .Deployment in die Cloud</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl apply -f deployment.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">deployment.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">#empty, will be filled by build</code></pre>
 </div>
 </div>
 <div class="imageblock center text-center">
@@ -186,7 +189,7 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Zuletzt aktualisiert 2021-11-08 16:03:19 UTC
+Zuletzt aktualisiert 2021-11-08 17:16:46 UTC
 </div>
 </div>
 </body>
