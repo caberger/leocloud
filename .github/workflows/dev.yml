@@ -33,6 +33,7 @@ jobs:
         sed -e 's/\r$//' -i *.sh
         chmod +x create-deployment.sh
         ./create-deployment.sh ${{ github.actor }} ${{ secrets.EMAIL }}
+        cat deployment.yaml
       working-directory: k8s
 
     - name: cache maven repository
