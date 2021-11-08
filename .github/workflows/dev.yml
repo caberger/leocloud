@@ -28,15 +28,6 @@ jobs:
         java-version: '11'
 
     - uses: actions/checkout@v2
-    - name: create cloud deployment file
-      run: |
-        sed -e 's/\r$//' -i *.sh
-        chmod +x create-deployment.sh
-        ./create-deployment.sh ${{ github.actor }} ${{ secrets.EMAIL }}
-        cat deployment.yaml
-        mkdir -p ../documentation/slides
-        cp deployment.yaml ../documentation/slides
-      working-directory: k8s
 
     - name: cache maven repository
       uses: actions/cache@v2
@@ -133,6 +124,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+   
+    - name: create cloud deployment file
+      run: |
+        sed -e 's/\r$//' -i *.sh
+        chmod +x create-deployment.sh
+        ./create-deployment.sh ${{ github.actor }} ${{ secrets.EMAIL }}
+        cat deployment.yaml
+        mkdir -p ../documentation/slides
+        cp deployment.yaml ../documentation/slides
+      working-directory: k8s
+
     - name: asciidoctor
       run: |
         sed -e 's/\r$//' -i *.sh
