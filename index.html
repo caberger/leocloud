@@ -21,16 +21,21 @@
 <br><span id="revremark">SCHILF @ HTL Leonding</span>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Inhaltsverzeichnis</div>
+<div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_cloud_computing_grundbegriffe">Cloud Computing Grundbegriffe</a></li>
 <li><a href="#_workshop">Workshop</a>
 <ul class="sectlevel2">
 <li><a href="#_die_kanonische_anwendung">die kanonische Anwendung</a></li>
 <li><a href="#_benötigte_software">benötigte Software</a></li>
+</ul>
+</li>
+<li><a href="#_kubernetes">Kubernetes</a>
+<ul class="sectlevel2">
 <li><a href="#_kubectl">kubectl</a></li>
 </ul>
 </li>
+<li><a href="#_kubernetes_deyployment_file">Appendix A: Kubernetes Deyployment File</a></li>
 </ul>
 </div>
 </div>
@@ -61,7 +66,7 @@
 <div class="content">
 <img src="images/kubernetescluster.png" alt="Kubernetes Cluster">
 </div>
-<div class="title">Abbildung 1. Ein Kubernetes Cluster</div>
+<div class="title">Figure 1. Ein Kubernetes Cluster</div>
 </div>
 <div class="ulist">
 <ul>
@@ -86,7 +91,7 @@
 <div class="content">
 <img src="images/ingress.png" alt="Ingress">
 </div>
-<div class="title">Abbildung 2. Ingress</div>
+<div class="title">Figure 2. Ingress</div>
 </div>
 </div>
 </div>
@@ -139,12 +144,27 @@
 </li>
 </ul>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kubernetes">Kubernetes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann wird ein Deployment File erzeugt (siehe Anhang).
+Speichern Sie diesen unter dem Dateinamen deployment.yaml.
+Dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"> kubectl apply -f deployment.yaml</code></pre>
+</div>
+</div>
 <div class="imageblock center text-center">
 <div class="content">
 <img src="images/helmsman.jpg" alt="Kubernetes" width="320">
 </div>
-<div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
-</div>
+<div class="title">Figure 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
 </div>
 <div class="sect2">
 <h3 id="_kubectl">kubectl</h3>
@@ -161,11 +181,292 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_kubernetes_deyployment_file">Appendix A: Kubernetes Deyployment File</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">deployment.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"># MySql Database server
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-setup
+data:
+  create.sql: |
+    select "hello from database init script!" from dual;
+  wait.sh: |
+    until echo '\q' | mysql -hmysql -P"$PORT" -u"$USER" -p"$PASSWORD" $DATABASE; do
+        echo "waiting for godot ..."
+        sleep 2
+    done
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-admin
+type: kubernetes.io/basic-auth
+stringData:
+  username: user
+  password: password
+  database: db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: mysql
+  template:
+    metadata:
+      labels:
+        component: mysql
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: database
+        - name: init-script
+          configMap:
+            name: mysql-setup
+            items:
+              - key: create.sql
+                path: create.sql
+      containers:
+        - name: mysql
+          image: mysql:8
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: username
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: database
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+            - name: MYSQL_ROOT_HOST
+              value: '%'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
+      name: mysql
+  selector:
+    component: mysql
+---
+# Quarkus Application Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appsrv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appsrv
+  template:
+    metadata:
+      labels:
+        app: appsrv
+    spec:
+      containers:
+        - name: appsrv
+          image: ghcr.io/qrzbrz/leocloud-appsrv:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: 1024Mi
+              cpu: 1024m
+      initContainers:
+        - name: wait
+          image: mysql:8
+          command: ["sh", "-c", "/usr/local/bin/wait.sh"]
+          volumeMounts:
+            - name: init-script
+              mountPath: /usr/local/bin
+              readOnly: true
+          env:
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: username
+            - name: DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: database
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+      volumes:
+        - name: init-script
+          configMap:
+            name: mysql-setup
+            items:
+              - key: wait.sh
+                path: wait.sh
+            defaultMode: 0744
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appsrv
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: appsrv
+  selector:
+    app: appsrv
+---
+# nginx Web Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/qrzbrz/leocloud-nginx:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: BASE_HREF
+              value: "c.aberger"
+          resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "250m"
+                limits:
+                  memory: "128Mi"
+                  cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: nginx
+---
+# Allow access from the internet
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /c.aberger(/|$)(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+
+## backend ingress is unused, forwarded by nginx in default.conf
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: appsrv-ingress
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
+#spec:
+#  rules:
+#    - host: student.cloud.htl-leonding.ac.at
+#      http:
+#        paths:
+#          - path: /${{ c.aberger }}/api/(.*)$
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: appsrv
+#                port:
+#                  number: 8080</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Zuletzt aktualisiert 2021-11-08 17:53:26 UTC
+Last updated 2021-11-08 18:01:48 UTC
 </div>
 </div>
 </body>
