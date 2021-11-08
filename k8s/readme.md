@@ -1,10 +1,31 @@
 # Cloud Deployment
 
-To work with the cloud you must have [kubectl] installed. The subfolder parts contain the files to deploy the application to your cloud account in the selected cloud namespace. 
+To work with the cloud you must have [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) installed. The subfolder [parts](./parts) contains the files to deploy the application to your cloud account in your personal cloud namespace. 
 
 Before you can use this you must do the following:
 
 - Install your config file into your ~/.kube folder
-- edit the .yaml files and adjust the namespace and username for your account
 
-   Replace _caberger_ with  your github account name and c.aberger with the base url of your cloud ingress.
+   Replace $GITHUB_ACCOUNT with your github account name and $EMAIL with the prefix of the email that you have used to register in the LeoCloud (only the part **before** the **@**). 
+
+   There is a script [create-deployment.sh](./create-deployment.sh) that you can use to do this automatically. 
+   Let us suppose your github account is _john-doe_ and your email is _john.doe@example.com_
+   Then you can run:
+```bash
+   cd k8s
+   chmod +x ./create-deployment.sh
+   ./create-deployment.sh john-doe john.doe@example.com
+```
+
+This will generate a file **deployment.yaml**
+
+After that you can run
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+To remove your deployment from the cloud again you execute the following:
+```bash
+kubectl delete -f deployment.yaml
+```

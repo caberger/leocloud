@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: appsrv
-          image: ghcr.io/caberger/leocloud-appsrv:latest
+          image: ghcr.io/$GITHUB_ACCOUNT/leocloud-appsrv:latest
           ports:
             - containerPort: 8080
           resources:

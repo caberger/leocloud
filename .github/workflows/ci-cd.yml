@@ -153,6 +153,10 @@ jobs:
     - name: convert github repository name to lowercase
       run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
+    - name: enable ssh login for debugging...
+      uses: mxschmitt/action-tmate@v3
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug == 'enabled' }}        
+
     - name: deploy to server  
       working-directory: distribution
       run: |

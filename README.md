@@ -78,10 +78,10 @@ docker-compose logs -f
 
 Make sure that you open port 80 on your firewall. All traffic goes through this port. 
 
-### using https
+### Using https
 If you want to use https,
 you must [add a certificate](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx) to nginx, expose it on port 443 and open port 443 on your firewall instead of port 80. In that case nginx terminates https and the application server does not 
 need a certificate, because all internal traffic is done with http.
 
 ## Cloud
-To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see [the readme in the k8s subfolder](./k8s/readme.md)
+To see how to deploy the same architecture to the [cloud](https://cloud.htl-leonding.ac.at/) see the [readme in the k8s subfolder](./k8s/readme.md)
