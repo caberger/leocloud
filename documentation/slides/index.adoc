@@ -70,17 +70,11 @@ Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
 
 == Kubernetes
 
-Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:
-.Deployment in die Cloud
+Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann wird ein Deployment File erzeugt (siehe Anhang).
+Diesen können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen, um Ihre Anwendung zu installieren.
 [source,bash]
 ----
  kubectl apply -f deployment.yaml
-----
-
-.deployment.yaml
-[source,bash]
-----
-include::deployment.yaml[]
 ----
 
 .Kubernetes (von griechisch κυβερνήτης, "Steuermann")
@@ -98,3 +92,12 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:
  kubectl logs <podname> -c <init-container-name>
 ----
 
+[appendix]
+
+== Kubernetes Deyployment File
+
+.deployment.yaml
+[source,bash]
+----
+include::deployment.yaml[]
+----
