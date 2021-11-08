@@ -1,3 +1,5 @@
+# MySql Database server
+#
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -63,12 +65,9 @@ spec:
         - name: mysql
           image: mysql:8
           resources:
-            requests:
-              memory: "500Mi"
-              cpu: "200m"
             limits:
               memory: "1Gi"
-              cpu: "400m"
+              cpu: "1000m"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3306

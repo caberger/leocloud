@@ -71,7 +71,8 @@ Windows Benutzer benötigen noch folgende zusätzlichen Installationen:
 == Kubernetes
 
 Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann wird ein Deployment File erzeugt (siehe Anhang).
-Diesen können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen, um Ihre Anwendung zu installieren.
+Speichern Sie diesen unter dem Dateinamen deployment.yaml.
+Dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:
 [source,bash]
 ----
  kubectl apply -f deployment.yaml
