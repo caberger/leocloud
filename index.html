@@ -152,7 +152,8 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>Wenn Sie Ihre email als Github Secret angegeben haben (siehe readme.md im k8s Verzeichnis), dann wird ein Deployment File erzeugt (siehe Anhang).
-Diesen können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen, um Ihre Anwendung zu installieren.</p>
+Speichern Sie diesen unter dem Dateinamen deployment.yaml.
+Dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -186,7 +187,124 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
 <div class="listingblock">
 <div class="title">deployment.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">apiVersion: apps/v1
+<pre class="highlight"><code class="language-bash" data-lang="bash"># MySql Database server
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-setup
+data:
+  create.sql: |
+    select "hello from database init script!" from dual;
+  wait.sh: |
+    until echo '\q' | mysql -hmysql -P"$PORT" -u"$USER" -p"$PASSWORD" $DATABASE; do
+        echo "waiting for godot ..."
+        sleep 2
+    done
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-admin
+type: kubernetes.io/basic-auth
+stringData:
+  username: user
+  password: password
+  database: db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: mysql
+  template:
+    metadata:
+      labels:
+        component: mysql
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: database
+        - name: init-script
+          configMap:
+            name: mysql-setup
+            items:
+              - key: create.sql
+                path: create.sql
+      containers:
+        - name: mysql
+          image: mysql:8
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: username
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: database
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin
+                  key: password
+            - name: MYSQL_ROOT_HOST
+              value: '%'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
+      name: mysql
+  selector:
+    component: mysql
+---
+# Quarkus Application Server
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appsrv
@@ -255,163 +373,7 @@ spec:
   selector:
     app: appsrv
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: nginx-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-spec:
-  rules:
-    - host: student.cloud.htl-leonding.ac.at
-      http:
-        paths:
-          - path: /c.aberger(/|$)(.*)$
-            pathType: Prefix
-            backend:
-              service:
-                name: nginx
-                port:
-                  number: 80
-
-## backend ingress is unused, forwarded by nginx in default.conf
-#---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  name: appsrv-ingress
-#  annotations:
-#    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
-#spec:
-#  rules:
-#    - host: student.cloud.htl-leonding.ac.at
-#      http:
-#        paths:
-#          - path: /${{ c.aberger }}/api/(.*)$
-#            pathType: Prefix
-#            backend:
-#              service:
-#                name: appsrv
-#                port:
-#                  number: 8080
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-setup
-data:
-  create.sql: |
-    select "hello from database init script!" from dual;
-  wait.sh: |
-    until echo '\q' | mysql -hmysql -P"$PORT" -u"$USER" -p"$PASSWORD" $DATABASE; do
-        echo "waiting for godot ..."
-        sleep 2
-    done
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-admin
-type: kubernetes.io/basic-auth
-stringData:
-  username: user
-  password: password
-  database: db
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: database
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 5Mi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      component: mysql
-  template:
-    metadata:
-      labels:
-        component: mysql
-    spec:
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: database
-        - name: init-script
-          configMap:
-            name: mysql-setup
-            items:
-              - key: create.sql
-                path: create.sql
-      containers:
-        - name: mysql
-          image: mysql:8
-          resources:
-            requests:
-              memory: "500Mi"
-              cpu: "200m"
-            limits:
-              memory: "1Gi"
-              cpu: "400m"
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3306
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql
-            - name: init-script
-              mountPath: /docker-entrypoint-initdb.d
-              readOnly: true
-          env:
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-admin
-                  key: username
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-admin
-                  key: database
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-admin
-                  key: password
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-admin
-                  key: password
-            - name: MYSQL_ROOT_HOST
-              value: '%'
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec:
-  ports:
-    - port: 3306
-      targetPort: 3306
-      protocol: TCP
-      name: mysql
-  selector:
-    component: mysql
----
+# nginx Web Server
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -453,7 +415,49 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: nginx</code></pre>
+    app: nginx
+---
+# Allow access from the internet
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /c.aberger(/|$)(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+
+## backend ingress is unused, forwarded by nginx in default.conf
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: appsrv-ingress
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
+#spec:
+#  rules:
+#    - host: student.cloud.htl-leonding.ac.at
+#      http:
+#        paths:
+#          - path: /${{ c.aberger }}/api/(.*)$
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: appsrv
+#                port:
+#                  number: 8080</code></pre>
 </div>
 </div>
 </div>
@@ -462,7 +466,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Zuletzt aktualisiert 2021-11-08 17:33:39 UTC
+Zuletzt aktualisiert 2021-11-08 17:48:38 UTC
 </div>
 </div>
 </body>
