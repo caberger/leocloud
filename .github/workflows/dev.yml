@@ -22,6 +22,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: convert github repository name to lowercase
+      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
     - uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
@@ -71,12 +74,12 @@ jobs:
       run: |
         pwd
         ls -l
-        docker build nginx --tag ${{ env.REGISTRY }}/${{ github.repository }}-nginx
+        docker build nginx --tag ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}
 
     - name: build appsrv docker image
       run: |
-        docker build --file appsrv/Dockerfile.jvm appsrv --tag ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+        docker build --file appsrv/Dockerfile.jvm appsrv --tag ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-appsrv
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
 
     - name: Log in to the Container registry
@@ -88,11 +91,11 @@ jobs:
 
     - name: push appsrv docker image
       run: |
-        docker push ${{ env.REGISTRY }}/${{ github.repository }}-appsrv
+        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-appsrv
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
     - name: push nginx docker image
       run: |
-        docker push ${{ env.REGISTRY }}/${{ github.repository }}-nginx
+        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-nginx
       working-directory: distribution/${{ env.DISTRIBUTION_FOLDER }}        
 
     - name: install ssh key
@@ -102,9 +105,6 @@ jobs:
         user: ${{ secrets.SERVER_USER }}
         server: ${{ secrets.SERVER }}
         alias: server
-
-    - name: convert github repository name to lowercase
-      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: enable ssh login for debugging...
       uses: mxschmitt/action-tmate@v3
