@@ -4,7 +4,6 @@
 
 OUTPUT=deployment.yaml
 DEFAULT_EMAIL=john.doe@example.com
-ACTOR=$1
 
 if [[ -z $1 ]]
 then
@@ -18,6 +17,8 @@ if [[ -z $2 ]]
 then
     echo "no EMAIL secret found, using $DEFAULT_EMAIL"
 fi
+
+ACTOR=$(echo $1 | tr '[:upper:]' '[:lower:]')
 EMAIL_PARAM=$2
 EMAIL_FROM_CMD_LINE="${EMAIL_PARAM:=$DEFAULT_EMAIL}"
 EMAIL=$(echo $EMAIL_FROM_CMD_LINE | sed -e "s/@.*$//")
