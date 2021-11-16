@@ -1,5 +1,6 @@
 # MySql Database server
 #
+#https://unix.stackexchange.com/questions/116520/mysql-server-wont-install-to-a-new-os-debian-ubuntu/116523#116523          
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,6 +13,9 @@ data:
         echo "waiting for godot ..."
         sleep 2
     done
+  leocloud.cnf: |
+    [mysqld]
+    innodb_use_native_aio = 0
 ---
 apiVersion: v1
 kind: Secret
@@ -61,9 +65,16 @@ spec:
             items:
               - key: create.sql
                 path: create.sql
+        - name: mysql-cnf
+          configMap:
+            name: mysql-setup
+            items:
+              - key: leocloud.cnf
+                path: leocloud.cnf                  
       containers:
         - name: mysql
           image: mysql:8
+#          command: ["tail", "-f", "/dev/null"]
           resources:
             limits:
               memory: "1Gi"
@@ -77,6 +88,10 @@ spec:
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
+            - name: mysql-cnf
+              mountPath: /etc/mysql/conf.d/leocloud.cnf
+              subPath: leocloud.cnf
+              readOnly: true      
           env:
             - name: MYSQL_USER
               valueFrom:
