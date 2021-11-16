@@ -129,6 +129,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: create cloud deployment file
+      run: |
+        sed -e 's/\r$//' -i *.sh
+        chmod +x create-deployment.sh
+        ./create-deployment.sh ${{ github.actor }} ${{ secrets.EMAIL }}
+        cat deployment.yaml
+        mkdir -p ../documentation/slides
+        cp deployment.yaml ../documentation/slides
+      working-directory: k8s
+
     - name: asciidoctor
       run: |
         docker run --rm -v $(pwd):/documents/ --user $UID:$GID asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -a docinfo=shared -a linkcss -a copycss -D html index.adoc
