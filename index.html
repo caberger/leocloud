@@ -17,11 +17,11 @@
 <span id="author" class="author">T. Stütz, C. Aberger</span><br>
 <span id="email" class="email"><a href="mailto:c.aberger@htl-leonding.ac.at">c.aberger@htl-leonding.ac.at</a></span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2021-11-11</span>
+<span id="revdate">2021-11-16</span>
 <br><span id="revremark">SCHILF @ HTL Leonding</span>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Inhaltsverzeichnis</div>
 <ul class="sectlevel1">
 <li><a href="#_cloud_computing_grundbegriffe">Cloud Computing Grundbegriffe</a></li>
 <li><a href="#_workshop">Workshop</a>
@@ -35,7 +35,7 @@
 <li><a href="#_kubectl">kubectl</a></li>
 </ul>
 </li>
-<li><a href="#_kubernetes_deyployment_file">Appendix A: Kubernetes Deyployment File</a></li>
+<li><a href="#_kubernetes_deyployment_file">Anhang A: Kubernetes Deyployment File</a></li>
 </ul>
 </div>
 </div>
@@ -66,7 +66,7 @@
 <div class="content">
 <img src="images/kubernetescluster.png" alt="Kubernetes Cluster">
 </div>
-<div class="title">Figure 1. Ein Kubernetes Cluster</div>
+<div class="title">Abbildung 1. Ein Kubernetes Cluster</div>
 </div>
 <div class="ulist">
 <ul>
@@ -91,7 +91,7 @@
 <div class="content">
 <img src="images/ingress.png" alt="Ingress">
 </div>
-<div class="title">Figure 2. Ingress</div>
+<div class="title">Abbildung 2. Ingress</div>
 </div>
 </div>
 </div>
@@ -164,7 +164,7 @@ Dann können sie Ihre Anwendung mit folgender Anweisung in die Cloud einspielen:
 <div class="content">
 <img src="images/helmsman.jpg" alt="Kubernetes" width="320">
 </div>
-<div class="title">Figure 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
+<div class="title">Abbildung 3. Kubernetes (von griechisch κυβερνήτης, "Steuermann")</div>
 </div>
 <div class="sect2">
 <h3 id="_kubectl">kubectl</h3>
@@ -182,13 +182,14 @@ Beispiel: die Logs des init-scripts eines Pods ansehen mit:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_kubernetes_deyployment_file">Appendix A: Kubernetes Deyployment File</h2>
+<h2 id="_kubernetes_deyployment_file">Anhang A: Kubernetes Deyployment File</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">deployment.yaml</div>
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash"># MySql Database server
 #
+#https://unix.stackexchange.com/questions/116520/mysql-server-wont-install-to-a-new-os-debian-ubuntu/116523#116523          
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -201,6 +202,9 @@ data:
         echo "waiting for godot ..."
         sleep 2
     done
+  leocloud.cnf: |
+    [mysqld]
+    innodb_use_native_aio = 0
 ---
 apiVersion: v1
 kind: Secret
@@ -250,9 +254,16 @@ spec:
             items:
               - key: create.sql
                 path: create.sql
+        - name: mysql-cnf
+          configMap:
+            name: mysql-setup
+            items:
+              - key: leocloud.cnf
+                path: leocloud.cnf                  
       containers:
         - name: mysql
           image: mysql:8
+#          command: ["tail", "-f", "/dev/null"]
           resources:
             limits:
               memory: "1Gi"
@@ -266,6 +277,10 @@ spec:
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
+            - name: mysql-cnf
+              mountPath: /etc/mysql/conf.d/leocloud.cnf
+              subPath: leocloud.cnf
+              readOnly: true      
           env:
             - name: MYSQL_USER
               valueFrom:
@@ -320,7 +335,7 @@ spec:
     spec:
       containers:
         - name: appsrv
-          image: ghcr.io/caberger/leocloud-appsrv:latest
+          image: ghcr.io/qrzbrz/leocloud-appsrv:latest
           ports:
             - containerPort: 8080
           resources:
@@ -390,7 +405,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: ghcr.io/caberger/leocloud-nginx:latest
+          image: ghcr.io/qrzbrz/leocloud-nginx:latest
           ports:
             - containerPort: 80
           env:
@@ -466,7 +481,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2021-11-11 08:29:40 UTC
+Zuletzt aktualisiert 2021-11-16 16:14:59 UTC
 </div>
 </div>
 </body>
