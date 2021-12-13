@@ -17,7 +17,7 @@
 <span id="author" class="author">T. Stütz, C. Aberger</span><br>
 <span id="email" class="email"><a href="mailto:c.aberger@htl-leonding.ac.at">c.aberger@htl-leonding.ac.at</a></span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2021-11-17</span>
+<span id="revdate">2021-12-13</span>
 <br><span id="revremark">SCHILF @ HTL Leonding</span>
 </div>
 <div id="toc" class="toc">
@@ -335,7 +335,7 @@ spec:
     spec:
       containers:
         - name: appsrv
-          image: ghcr.io/caberger/leocloud-appsrv:latest
+          image: ghcr.io/qrzbrz/leocloud-appsrv:latest
           ports:
             - containerPort: 8080
           resources:
@@ -405,19 +405,19 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: ghcr.io/caberger/leocloud-nginx:latest
+          image: ghcr.io/qrzbrz/leocloud-nginx:latest
           ports:
             - containerPort: 80
           env:
             - name: BASE_HREF
               value: "c.aberger"
           resources:
-                requests:
-                  memory: "64Mi"
-                  cpu: "250m"
-                limits:
-                  memory: "128Mi"
-                  cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
@@ -481,7 +481,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2021-11-17 11:05:39 UTC
+Last updated 2021-12-13 08:18:36 UTC
 </div>
 </div>
 </body>
