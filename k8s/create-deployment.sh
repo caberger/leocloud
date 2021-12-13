@@ -38,4 +38,6 @@ do
     let CNT+=1
 done
 
+cat deployment.yaml
+echo "please run now: kubectl -f deployment.yaml"
 exit 0
