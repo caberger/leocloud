@@ -20,14 +20,14 @@ spec:
             - containerPort: 80
           env:
             - name: BASE_HREF
-              value: "c.aberger"
+              value: "$EMAIL"
           resources:
-                requests:
-                  memory: "64Mi"
-                  cpu: "250m"
-                limits:
-                  memory: "128Mi"
-                  cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
