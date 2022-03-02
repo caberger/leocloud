@@ -46,7 +46,7 @@ const plugins = opts => {
         ...htmlWebpackPlugins(opts),
         new MiniCssExtractPlugin({
             filename: '[name]-[contenthash].css',
-            chunkFilename: '/[id].css',
+            chunkFilename: '[id].css',
         }),
         new CopyWebpackPlugin({
             patterns: [
