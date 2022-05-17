@@ -39,5 +39,5 @@ do
 done
 
 cat deployment.yaml
-echo "please run now: kubectl -f deployment.yaml"
+echo "please run now: kubectl apply -f deployment.yaml"
 exit 0
